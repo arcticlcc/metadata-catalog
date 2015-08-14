@@ -21,7 +21,8 @@
         "symfony/translation": "~2.6",
         "symfony/twig-bridge": "~2.6",
         "symfony/validator": "~2.6",
-        "dflydev/doctrine-orm-service-provider": "^2.0"
+        "dflydev/doctrine-orm-service-provider": "^2.0",
+        "deralex/yaml-config-service-provider": "2.0.x-dev"
     },
     "autoload": {
         "psr-0": { "": "src/" }
