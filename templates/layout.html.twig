@@ -3,8 +3,20 @@
     <head>
         <title>{% block title '' %} - My Silex Application</title>
 
-        <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
-
+        {% block stylesheet %}
+            {% stylesheets 
+            filter='lessphp,csscopyfile, cssmin, csscompress'
+            'vendor/twbs/bootstrap/less/bootstrap.less'
+            'vendor/saxulum/saxulum-bootstrap-provider/src/Saxulum/SaxulumBootstrapProvider/Resources/less/form.less'
+            %}
+            <link rel="stylesheet" href="{{ asset( asset_url )}}" />
+            {% endstylesheets %}
+            {% stylesheets filter='csscopyfile, cssmin'
+            'assets/css/main.css'
+            %}
+            <link rel="stylesheet" href="{{ asset( asset_url )}}" />
+            {% endstylesheets %}
+        {% endblock stylesheet %}
         <script type="text/javascript">
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
