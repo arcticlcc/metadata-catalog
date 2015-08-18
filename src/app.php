@@ -77,5 +77,6 @@ $app->register(new DoctrineOrmServiceProvider, array(
         'JSONB_EX' => 'Boldtrn\JsonbBundle\Query\JsonbExistence',
     )
 ));
-$app->register(new ConsoleProvider());
+$app['orm.em']->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb','jsonb');
+$app->register(new ConsoleProvider($app));
 return $app;
