@@ -64,5 +64,4 @@ $app->register(new DoctrineOrmServiceProvider, array(
     )
 ));
 
-echo __DIR__;
 return $app;

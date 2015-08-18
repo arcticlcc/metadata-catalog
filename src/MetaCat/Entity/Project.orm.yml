@@ -1,0 +1,14 @@
+MetaCat\Entity\Project:
+    type: entity
+    table: project
+    id:
+        projectid:
+            type: guid
+            #generator: { strategy: AUTO }
+    fields:
+        json:
+            type: jsonb
+        xml:
+            type: text
+        html:
+            type: text
