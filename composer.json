@@ -26,7 +26,13 @@
     "saxulum/saxulum-doctrine-orm-commands": "~1.0.0",
     "saxulum/saxulum-doctrine-orm-manager-registry-provider": "~3.0",
     "boldtrn/jsonb-bundle": "^1.0",
-    "opensoft/doctrine-postgres-types": "^1.1"
+    "opensoft/doctrine-postgres-types": "^1.1",
+    "saxulum/saxulum-bootstrap-provider": "dev-master",
+    "twbs/bootstrap": "~3.3",
+    "saxulum/saxulum-assetic-twig-provider": "~2.0",
+    "natxet/cssmin": "~3.0.1",
+    "mrclay/minify": "~2.2.0",
+    "oyejorge/less.php": "~1.7"
   },
   "autoload": {
     "psr-0": {
