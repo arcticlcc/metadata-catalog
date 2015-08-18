@@ -32,7 +32,8 @@
     "saxulum/saxulum-assetic-twig-provider": "~2.0",
     "natxet/cssmin": "~3.0.1",
     "mrclay/minify": "~2.2.0",
-    "oyejorge/less.php": "~1.7"
+    "oyejorge/less.php": "~1.7",
+    "saxulum/saxulum-console": "~3.0"
   },
   "autoload": {
     "psr-0": {

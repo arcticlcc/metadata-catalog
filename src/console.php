@@ -18,8 +18,10 @@ use Saxulum\DoctrineOrmCommands\Command\Proxy\RunSqlDoctrineCommand;
 use Saxulum\DoctrineOrmCommands\Command\Proxy\UpdateSchemaDoctrineCommand;
 use Saxulum\DoctrineOrmCommands\Command\Proxy\ValidateSchemaCommand;
 use Saxulum\DoctrineOrmCommands\Helper\ManagerRegistryHelper;
+use Saxulum\AsseticTwig\Command\AsseticDumpCommand;
 
-$console = new Application('My Silex Application', 'n/a');
+//$console = new Application('My Silex Application', 'n/a');
+$console = $app['console'];
 $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
 $console->setDispatcher($app['dispatcher']);
 $helperSet = $console->getHelperSet();
@@ -47,4 +49,5 @@ $console->add(new RunDqlDoctrineCommand);
 $console->add(new RunSqlDoctrineCommand);
 $console->add(new UpdateSchemaDoctrineCommand);
 $console->add(new ValidateSchemaCommand);
-return $console;
+$console->add(new AsseticDumpCommand)->addArgument('app', null, '',$app);
+//return $console;

@@ -8,6 +8,8 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider;
 use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
+use Saxulum\AsseticTwig\Provider\AsseticTwigProvider;
+use Saxulum\Console\Provider\ConsoleProvider;
 //use Boldtrn\JsonbBundle\Types\JsonbArrayType;
 //use Doctrine\Common\Annotations\AnnotationRegistry;
 
@@ -29,6 +31,18 @@ $app['twig'] = $app -> extend('twig', function($twig, $app) {
 
     return $twig;
 });
+$app['twig.loader.filesystem'] = $app->extend('twig.loader.filesystem',
+    function (\Twig_Loader_Filesystem $twigLoaderFilesystem) {
+        $twigLoaderFilesystem->addPath(__DIR__.'/../templates', 'MetaCat');
+
+        return $twigLoaderFilesystem;
+    }
+);
+$app->register(new AsseticTwigProvider(), array(
+    'assetic.asset.root' => __DIR__.'/..',
+    'assetic.asset.asset_root' => __DIR__.'/../web',
+));
+//var_dump ($app['assetic.asset.dumper']);
 //set directory for config files
 $app['config.dir'] = __DIR__.'/../config/';
 $app -> register(new DerAlex\Pimple\YamlConfigServiceProvider($app['config.dir'] . 'config.yml'));
@@ -63,5 +77,5 @@ $app->register(new DoctrineOrmServiceProvider, array(
         'JSONB_EX' => 'Boldtrn\JsonbBundle\Query\JsonbExistence',
     )
 ));
-
+$app->register(new ConsoleProvider());
 return $app;
