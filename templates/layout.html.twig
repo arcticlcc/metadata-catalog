@@ -5,14 +5,10 @@
 
         {% block stylesheet %}
             {% stylesheets 
-            filter='lessphp,csscopyfile, cssmin, csscompress'
+            filter='lessphp,csscopyfile, ?cssmin, ?csscompress'
             'vendor/twbs/bootstrap/less/bootstrap.less'
             'vendor/saxulum/saxulum-bootstrap-provider/src/Saxulum/SaxulumBootstrapProvider/Resources/less/form.less'
-            %}
-            <link rel="stylesheet" href="{{ asset( asset_url )}}" />
-            {% endstylesheets %}
-            {% stylesheets filter='csscopyfile, cssmin'
-            'assets/css/main.css'
+            'assets/css/main.less'
             %}
             <link rel="stylesheet" href="{{ asset( asset_url )}}" />
             {% endstylesheets %}
