@@ -3,6 +3,19 @@
   "description": "A pre-configured skeleton for the Silex microframework",
   "license": "MIT",
   "type": "project",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "jquery/jquery",
+        "version": "1.9.1",
+        "dist": {
+          "url": "http://code.jquery.com/jquery-1.9.1.js",
+          "type": "file"
+        }
+      }
+    }
+  ],
   "require": {
     "php": ">=5.5.9",
     "silex/silex": "~2.0@dev",
@@ -33,7 +46,8 @@
     "natxet/cssmin": "~3.0.1",
     "mrclay/minify": "~2.2.0",
     "oyejorge/less.php": "~1.7",
-    "saxulum/saxulum-console": "~3.0"
+    "saxulum/saxulum-console": "~3.0",
+    "jquery/jquery": "1.9.*"
   },
   "autoload": {
     "psr-0": {

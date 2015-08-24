@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "690173d9a926c8e4a8228479ca2223d5",
+    "hash": "476a1c099adfb581bbd9f5164c37a610",
     "packages": [
         {
             "name": "boldtrn/jsonb-bundle",
@@ -766,6 +766,17 @@
                 "orm"
             ],
             "time": "2015-04-02 20:40:18"
+        },
+        {
+            "name": "jquery/jquery",
+            "version": "1.9.1",
+            "dist": {
+                "type": "file",
+                "url": "http://code.jquery.com/jquery-1.9.1.js",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1547,12 +1558,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "48a3fdc483bc7e5e27750afaf2325682ea2b325f"
+                "reference": "8a77fe76f844d01ba5723be1b23c9e1adae1b5f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/48a3fdc483bc7e5e27750afaf2325682ea2b325f",
-                "reference": "48a3fdc483bc7e5e27750afaf2325682ea2b325f",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/8a77fe76f844d01ba5723be1b23c9e1adae1b5f7",
+                "reference": "8a77fe76f844d01ba5723be1b23c9e1adae1b5f7",
                 "shasum": ""
             },
             "require": {
@@ -1571,6 +1582,7 @@
                 "doctrine/dbal": "~2.2",
                 "monolog/monolog": "~1.4,>=1.4.1",
                 "swiftmailer/swiftmailer": "5.*",
+                "symfony/asset": "~2.7",
                 "symfony/browser-kit": "~2.7",
                 "symfony/config": "~2.7",
                 "symfony/css-selector": "~2.7",
@@ -1626,7 +1638,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2015-08-05 16:16:09"
+            "time": "2015-08-23 07:09:04"
         },
         {
             "name": "silex/web-profiler",
