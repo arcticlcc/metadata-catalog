@@ -40,9 +40,8 @@ $app['twig.loader.filesystem'] = $app->extend('twig.loader.filesystem',
 );
 $app->register(new AsseticTwigProvider(), array(
     'assetic.asset.root' => __DIR__.'/..',
-    'assetic.asset.asset_root' => __DIR__.'/../web',
+    'assetic.asset.asset_root' => __DIR__.'/../web/assets',
 ));
-//var_dump ($app['assetic.asset.dumper']);
 //set directory for config files
 $app['config.dir'] = __DIR__.'/../config/';
 $app -> register(new DerAlex\Pimple\YamlConfigServiceProvider($app['config.dir'] . 'config.yml'));

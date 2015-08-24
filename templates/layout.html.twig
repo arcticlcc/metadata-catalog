@@ -4,15 +4,16 @@
         <title>{% block title '' %} - My Silex Application</title>
 
         {% block stylesheet %}
-            {% stylesheets 
+            {% stylesheets
             filter='lessphp,csscopyfile, ?cssmin, ?csscompress'
             'vendor/twbs/bootstrap/less/bootstrap.less'
             'vendor/saxulum/saxulum-bootstrap-provider/src/Saxulum/SaxulumBootstrapProvider/Resources/less/form.less'
             'assets/css/main.less'
             %}
-            <link rel="stylesheet" href="{{ asset( asset_url )}}" />
+            <link rel="stylesheet" href="assets/{{ asset( asset_url )}}" />
             {% endstylesheets %}
         {% endblock stylesheet %}
+
         <script type="text/javascript">
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
@@ -27,5 +28,13 @@
     </head>
     <body>
         {% block content %}{% endblock %}
+        {% block javascript %}
+            {% javascripts
+            filter='?jsmin'
+            'vendor/jquery/jquery/*.js'
+            %}
+            <script type="text/javascript" src="assets/{{ asset( asset_url )}}"></script>
+        {% endjavascripts %}
+        {% endblock javascript %}
     </body>
 </html>
