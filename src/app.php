@@ -16,6 +16,8 @@ use Saxulum\Console\Provider\ConsoleProvider;
 //AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 $app = new Application();
+$app->mount('/project', new MetaCat\Controller\ProjectController());
+
 $app -> register(new RoutingServiceProvider());
 $app -> register(new ValidatorServiceProvider());
 $app -> register(new ServiceControllerServiceProvider());
