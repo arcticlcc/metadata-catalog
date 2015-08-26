@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title '' %} - My Silex Application</title>
+        <title>{% block title '' %} - Metdata Catalog</title>
 
         {% block stylesheet %}
             {% stylesheets
@@ -9,8 +9,9 @@
             'vendor/twbs/bootstrap/less/bootstrap.less'
             'vendor/saxulum/saxulum-bootstrap-provider/src/Saxulum/SaxulumBootstrapProvider/Resources/less/form.less'
             'assets/css/main.less'
+            output='css/mc.css'
             %}
-            <link rel="stylesheet" href="assets/{{ asset( asset_url )}}" />
+            <link rel="stylesheet" href="/assets{{ asset( asset_url )}}" />
             {% endstylesheets %}
         {% endblock stylesheet %}
 
@@ -27,14 +28,23 @@
         </script>
     </head>
     <body>
-        {% block content %}{% endblock %}
-        {% block javascript %}
-            {% javascripts
-            filter='?jsmin'
-            'vendor/jquery/jquery/*.js'
-            %}
-            <script type="text/javascript" src="assets/{{ asset( asset_url )}}"></script>
-        {% endjavascripts %}
-        {% endblock javascript %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    {% include 'includes/header.html.twig' %}
+                </div>
+            </div>
+            {% block content %}{% endblock %}
+            {% block javascript %}
+                {% javascripts
+                filter='?jsmin'
+                'vendor/jquery/jquery/*.js'
+                'vendor/twbs/bootstrap/js/collapse.js'
+                output='assets/mc.js'
+                %}
+                <script type="text/javascript" src="/assets{{ asset( asset_url )}}"></script>
+            {% endjavascripts %}
+            {% endblock javascript %}
+        </div>
     </body>
 </html>

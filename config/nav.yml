@@ -1,0 +1,14 @@
+---
+nav:
+  -
+    icon: home
+    path: homepage
+    title: Home
+  -
+    icon: wrench
+    path: project
+    title: Projects
+  -
+    icon: file
+    path: homepage
+    title: Products

@@ -15,7 +15,7 @@ class ProjectController implements ControllerProviderInterface {
             $em = $app['orm.em'];
             $qb = $em->createQueryBuilder();
 
-            $qb->select(array('p', 'p.projectid')) //
+            $qb->select(array('p.projectid as id')) //
                 ->addSelect(array('JSONB_HGG(p.json, \'{metadata,resourceInfo,citation,title}\') as title')) //
                 ->from('MetaCat\Entity\Project', 'p') //
                 ->orderBy('title', 'ASC');
@@ -23,13 +23,21 @@ class ProjectController implements ControllerProviderInterface {
             $query = $qb->getQuery();
             $results = $query->getResult();
 
+            return $app['twig']->render('project.html.twig', array(
+                'title' => 'Projects',
+                'active_page' => 'project',
+                'path' => ['project' => 'Projects'],
+                'data' => $results
+            ));
+
+
             foreach ($results as $row) {
                 echo "uuid: " . $row['projectid'];
                 echo "title: " . $row['title'];
             }
 
             return TRUE;
-        });
+        })->bind('project');
 
         return $controllers;
     }

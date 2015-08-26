@@ -1,5 +1,20 @@
 {% extends "layout.html.twig" %}
 
+{% block title %} {{ title }} {% endblock %}
+
 {% block content %}
-    Welcome to your new Silex Application!
+    <div class="row">
+        <div class="col-md-12">
+            <h1> Metadata Catalog <small>Browse project and product metadata</small></h1>
+            <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
+                tellus ac cursus commodo, tortor mauris condimentum nibh,
+                ut fermentum massa justo sit amet risus. Etiam porta sem
+                malesuada magna mollis euismod. Donec sed odio dui.
+            </p>
+            <p>
+                <a class="btn" href="#">View details »</a>
+            </p>
+        </div>
+    </div>
 {% endblock %}

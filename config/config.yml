@@ -2,3 +2,5 @@ debug: true
 imports:
     databases:
         resource: 'db.yml'
+    nav:
+        resource: 'nav.yml'
