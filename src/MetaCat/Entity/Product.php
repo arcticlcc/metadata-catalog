@@ -2,11 +2,12 @@
 
 namespace MetaCat\Entity;
 
-class Project {
-    protected $projectid;
+class Product {
+    protected $productid;
     protected $json;
     protected $html;
     protected $xml;
 
-    private $products;
+    private $project;
+    private $projectid;
 }

@@ -1,10 +1,15 @@
 MetaCat\Entity\Project:
     type: entity
     table: project
+    readOnly: true
+    oneToMany:
+      products:
+        targetEntity: Product
+        mappedBy: project
     id:
         projectid:
             type: guid
-            #generator: { strategy: AUTO }
+            generator: { strategy: UUID }
     fields:
         json:
             type: jsonb

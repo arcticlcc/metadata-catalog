@@ -4,7 +4,7 @@ namespace MetaCat\Controller;
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
 
-class ProjectController implements ControllerProviderInterface {
+class ProductController implements ControllerProviderInterface {
     public function connect(Application $app) {
         $controllers = $app['controllers_factory'];
 
@@ -13,22 +13,22 @@ class ProjectController implements ControllerProviderInterface {
             $em = $app['orm.em'];
             $qb = $em->createQueryBuilder();
 
-            $qb->select(array('p.projectid as id')) //
+            $qb->select(array('p.productid as id','p.projectid')) //
                 ->addSelect(array('JSONB_HGG(p.json, \'{metadata,resourceInfo,citation,title}\') as title')) //
-                ->from('MetaCat\Entity\Project', 'p') //
+                ->from('MetaCat\Entity\Product', 'p') //
                 ->orderBy('title', 'ASC');
 
             $query = $qb->getQuery();
             $results = $query->getArrayResult();
 
             return $app['twig']->render('metadata.html.twig', array(
-                'title' => 'Projects',
-                'active_page' => 'project',
-                'path' => ['project' => 'Projects'],
+                'title' => 'Products',
+                'active_page' => 'product',
+                'path' => ['product' => 'Products'],
                 'data' => $results
             ));
 
-        })->bind('project');
+        })->bind('product');
 
         return $controllers;
     }

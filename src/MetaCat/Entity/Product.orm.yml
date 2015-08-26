@@ -1,0 +1,24 @@
+MetaCat\Entity\Product:
+    type: entity
+    table: product
+    readOnly: true
+    manyToOne:
+      project:
+        targetEntity: Project
+        inversedBy: products
+        joinColumn:
+          name: projectid
+          referencedColumnName: projectid
+    id:
+        productid:
+            type: guid
+            generator: { strategy: UUID }
+    fields:
+        projectid:
+            type: guid
+        json:
+            type: jsonb
+        xml:
+            type: text
+        html:
+            type: text

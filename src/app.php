@@ -17,6 +17,7 @@ use Saxulum\Console\Provider\ConsoleProvider;
 
 $app = new Application();
 $app->mount('/project', new MetaCat\Controller\ProjectController());
+$app->mount('/product', new MetaCat\Controller\ProductController());
 
 $app -> register(new RoutingServiceProvider());
 $app -> register(new ValidatorServiceProvider());
