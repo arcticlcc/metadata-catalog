@@ -8,9 +8,9 @@
       "type": "package",
       "package": {
         "name": "jquery/jquery",
-        "version": "1.9.1",
+        "version": "1.11.3",
         "dist": {
-          "url": "http://code.jquery.com/jquery-1.9.1.js",
+          "url": "http://code.jquery.com/jquery-1.11.3.js",
           "type": "file"
         }
       }
@@ -47,7 +47,7 @@
     "mrclay/minify": "~2.2.0",
     "oyejorge/less.php": "~1.7",
     "saxulum/saxulum-console": "~3.0",
-    "jquery/jquery": "1.9.*"
+    "jquery/jquery": "1.11.*"
   },
   "autoload": {
     "psr-0": {
