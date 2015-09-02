@@ -29,3 +29,15 @@ $app->error(function (\Exception $e, Request $request, $code) use ($app) {
 
     return new Response($app['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
 });
+//default whitelisting
+//TODO: add contextual error messages
+$app->before(function (Request $request) use ($app) {
+
+    if($format = $request->get('format')) {
+        $app['config']['white']['format'][$format];
+    }
+
+    if($e = $request->get('entity')) {
+        $app['config']['white']['entity'][$e];
+    }
+});

@@ -1,0 +1,9 @@
+---
+white:
+  format:
+    html: true
+    json: true
+    xml: true
+  entity:
+    product: true
+    project: true
