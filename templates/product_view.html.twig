@@ -1,57 +1,138 @@
 {% extends "layout.html.twig" %}
-
+{% set resource = data.json.metadata.resourceInfo %}
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-12 ">
-        <h2> {{ title }}</h2>
-
-        <hr />
+        <h3> {{ title }}</h3>
     </div>
     <div class="col-md-12">
-        <dl class="dl-horizontal well">
-            <dt>
-                Metadata Format
-            </dt>
-            <dd>
-                <ul class="list-inline">
-                    <li>
-                        <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'json'}) }}">mdJSON</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'xml'}) }}">ISO 19115-2</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'html'}) }}">HTML</a>
-                    </li>
-                </ul>
-            </dd>
-            <dt>
-                Product Title
-            </dt>
-            <dd>
-                {{ data.json.metadata.resourceInfo.citation.title }}
-            </dd>
-            <dt>
-                Description
-            </dt>
-            <dd>
-                {{ data.json.metadata.resourceInfo.shortAbstract }}
-            </dd>
-            <dt>
-                Project ID
-            </dt>
-            <dd>
-                <a href="{{ path('project') }}{{ data.projectid }}/view">{{ data.projectid }}</a>
-            </dd>
-            <dt>
-                Project Title
-            </dt>
-            <dd>
-                {{ data.project.metadata.resourceInfo.citation.title }}
-            </dd>
-        </dl>
+        <div class="well">
+            <dl class="dl-horizontal">
+                <dt>
+                    Metadata Format
+                </dt>
+                <dd>
+                    <ul class="list-inline">
+                        <li>
+                            <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'json'}) }}">mdJSON</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'xml'}) }}">ISO 19115-2</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'html'}) }}">HTML</a>
+                        </li>
+                    </ul>
+                </dd>
+                <dt>
+                    Product Title
+                </dt>
+                <dd>
+                    {{ resource.citation.title }}
+                </dd>
+                <dt>
+                    Description
+                </dt>
+                <dd>
+                    {{ resource.shortAbstract }}
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>
+                    Project ID
+                </dt>
+                <dd>
+                    <a href="{{ path('project') }}{{ data.projectid }}/view">{{ data.projectid }}</a>
+                </dd>
+                <dt>
+                    Project Title
+                </dt>
+                <dd>
+                    {{ resource.citation.title }}
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="col-md-12 ">
+        <div class="panel panel-default" id="panel1">
+            <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseOne">
+                <h4 class="panel-title"><span> Product Abstract</span></h4>
+
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p class="">
+                        <span class="pre">{{ resource.abstract }}</span>
+                    </p>
+                    <p class="">
+                        <span class="text-muted">Purpose:</span><span class="pre">{{ resource.purpose }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 ">
+        <div class="panel panel-default" id="panel1">
+            <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseTwo">
+                <h4 class="panel-title"><span> Product Keywords</span></h4>
+
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <ul>
+                        {% for kw in resource.keyword %}
+                        {% for k in kw.keyword %}
+                        <li>
+                            {{ k }}
+                        </li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 ">
+        <div class="panel panel-default" id="panel1">
+            <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseAssoc">
+                <h4 class="panel-title"><span>Associated Products</span></h4>
+
+            </div>
+            <div id="collapseAssoc" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th> ID </th>
+                                <th> Title </th>
+                                <th colspan="3" class="text-center"> Metadata Link </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% set row_type = 'product' %}
+                        {% for row in data.json.metadata.associatedResource %}
+                        {% if row.associationType == 'projectProduct' and row.initiativeType == 'project' %}
+                            {% set row_id = null %}
+                            {% for id in row.resourceCitation.identifier if id.type == 'uuid' and row_id is null %}
+                            {% set row_id = id.identifier %}
+                            {% endfor %}
+                            <tr>
+                                <td><a href="{{ path(row_type) }}{{ row_id }}/view">{{ row_id }}</a></td>
+                                <td> {{ row.resourceCitation.title }} </td>
+                                <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'json'}) }}">mdJSON</a></td>
+                                <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'xml'}) }}">ISO 19115-2</a></td>
+                                <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'html'}) }}">HTML</a></td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

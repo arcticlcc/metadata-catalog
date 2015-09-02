@@ -1,4 +1,33 @@
+@import (reference) "../../vendor/twbs/bootstrap/less/variables";
+
 /***Main***/
 body {
   padding-top: 60px;
+}
+
+p.pre, span.pre {
+  white-space: pre-wrap;
+}
+
+/***Panels***/
+.panel-heading.collapsible {
+
+  span:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e113";
+    float: right;
+    color: @brand-primary;
+  }
+
+  &.collapsed span:after {
+    content:"\e114";
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    span:after {
+      color: @link-hover-color;
+    }
+  }
 }

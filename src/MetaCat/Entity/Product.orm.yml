@@ -16,6 +16,7 @@ MetaCat\Entity\Product:
     fields:
         projectid:
             type: guid
+            nullable: true
         json:
             type: jsonb
         xml:
