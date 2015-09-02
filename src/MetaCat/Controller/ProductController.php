@@ -39,9 +39,9 @@ class ProductController implements ControllerProviderInterface {
         $controllers->get('/{id}/view', function(Application $app, $id) {
 
             $em = $app['orm.em'];
-                $query = $em->createQuery("SELECT c.productid, c.json, c.projectid, p.json as project from MetaCat\Entity\Product c JOIN c.project p where c.productid = ?1");
+                $query = $em->createQuery("SELECT c.productid as id, c.json, c.projectid, p.json as project from MetaCat\Entity\Product c JOIN c.project p where c.productid = ?1");
                 $query->setParameter(1, $id);
-                $item = $query->getResult();
+                $item = $query->getArrayResult();
 
             return $app['twig']->render('product_view.html.twig', array(
                 'title' => "Product: $id",
@@ -51,7 +51,7 @@ class ProductController implements ControllerProviderInterface {
                     //'metadata' => [$id,'product',$id],
                     'view' => ['View'],
                 ],
-                //'data' => $results
+                'data' => $item[0]
             ));
 
         })->bind('productview');

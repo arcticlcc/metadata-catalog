@@ -3,9 +3,55 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <h2> {{ title }} </h2>
-        </div>
+<div class="row">
+    <div class="col-md-12 ">
+        <h2> {{ title }}</h2>
+
+        <hr />
     </div>
+    <div class="col-md-12">
+        <dl class="dl-horizontal well">
+            <dt>
+                Metadata Format
+            </dt>
+            <dd>
+                <ul class="list-inline">
+                    <li>
+                        <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'json'}) }}">mdJSON</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'xml'}) }}">ISO 19115-2</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('metadata', {entity: active_page, id: data.id, format: 'html'}) }}">HTML</a>
+                    </li>
+                </ul>
+            </dd>
+            <dt>
+                Product Title
+            </dt>
+            <dd>
+                {{ data.json.metadata.resourceInfo.citation.title }}
+            </dd>
+            <dt>
+                Description
+            </dt>
+            <dd>
+                {{ data.json.metadata.resourceInfo.shortAbstract }}
+            </dd>
+            <dt>
+                Project ID
+            </dt>
+            <dd>
+                <a href="{{ path('project') }}{{ data.projectid }}/view">{{ data.projectid }}</a>
+            </dd>
+            <dt>
+                Project Title
+            </dt>
+            <dd>
+                {{ data.project.metadata.resourceInfo.citation.title }}
+            </dd>
+        </dl>
+    </div>
+</div>
 {% endblock %}
