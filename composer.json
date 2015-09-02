@@ -47,7 +47,8 @@
     "mrclay/minify": "~2.2.0",
     "oyejorge/less.php": "~1.7",
     "saxulum/saxulum-console": "~3.0",
-    "jquery/jquery": "1.11.*"
+    "jquery/jquery": "1.11.*",
+    "jeromemacias/silex-debug": "~2.0@dev"
   },
   "autoload": {
     "psr-0": {
