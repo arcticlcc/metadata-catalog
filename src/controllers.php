@@ -11,8 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig', array('title' => 'Home'));
 })
-->bind('homepage')
-;
+->bind('homepage');
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
@@ -29,6 +28,22 @@ $app->error(function (\Exception $e, Request $request, $code) use ($app) {
 
     return new Response($app['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
 });
+
+//set content-type for "plain" API responses
+$app->view(function (array $controllerResult, Request $request) use ($app) {
+    $format = $request->get('format');
+
+    if ('json' === $format || 'xml' === $format) {
+        return new Response(
+            $controllerResult[0],
+            200,
+            ['Content-Type' => "application/$format"]
+        );
+    }
+
+    return $controllerResult[0];
+});
+
 //default whitelisting
 //TODO: add contextual error messages
 $app->before(function (Request $request) use ($app) {
