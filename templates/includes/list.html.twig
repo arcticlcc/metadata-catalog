@@ -3,17 +3,19 @@
         <tr>
             <th> ID </th>
             <th> Title </th>
+            <th> Owner </th>
             <th colspan="3" class="text-center"> Metadata Link </th>
         </tr>
     </thead>
     <tbody>
         {% for row in data %}
         <tr>
-            <td> {{ row.id }} </td>
+            <td> <a href="{{ path(active_page) }}{{ row.id }}/view">{{ row.id }}</a> </td>
             <td> {{ row.title }} </td>
-            <td class="text-center"><a href="{{ path(active_page) }}{{ row.id }}.json">mdJSON</a></td>
-            <td class="text-center"><a href="{{ path(active_page) }}{{ row.id }}.xml">ISO 19115-2</a></td>
-            <td class="text-center"><a href="{{ path(active_page) }}{{ row.id }}.html">HTML</a></td>
+            <td> {{ row.owner }} </td>
+            <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'json'}) }}">mdJSON</a></td>
+            <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'xml'}) }}">ISO 19115-2</a></td>
+            <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'html'}) }}">HTML</a></td>
         </tr>
         {% endfor %}
     </tbody>

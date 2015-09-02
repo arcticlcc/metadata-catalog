@@ -3,6 +3,7 @@ namespace MetaCat\Controller;
 
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class ProjectController implements ControllerProviderInterface {
     public function connect(Application $app) {
@@ -11,20 +12,25 @@ class ProjectController implements ControllerProviderInterface {
         $controllers->get('/', function(Application $app) {
 
             $em = $app['orm.em'];
-            $qb = $em->createQueryBuilder();
-
-            $qb->select(array('p.projectid as id')) //
-                ->addSelect(array('JSONB_HGG(p.json, \'{metadata,resourceInfo,citation,title}\') as title')) //
-                ->from('MetaCat\Entity\Project', 'p') //
-                ->orderBy('title', 'ASC');
-
-            $query = $qb->getQuery();
+            $sql = "SELECT p.projectid as id,
+                p.json#>>'{metadata,resourceInfo,citation,title}' as title,
+                (SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c WHERE
+                    c->'contactId' = (SELECT value FROM jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS role WHERE
+                    role@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId') ->>'organizationName' as owner
+                FROM project p";
+            $rsm = new ResultSetMappingBuilder($em);
+            $rsm->addRootEntityFromClassMetadata('MetaCat\Entity\Project', 'p');
+            //$rsm->addFieldResult('p', 'id', 'projectid');
+            $rsm->addScalarResult('id', 'id');
+            $rsm->addScalarResult('title', 'title');
+            $rsm->addScalarResult('owner', 'owner');
+            $query = $em->createNativeQuery($sql, $rsm);
             $results = $query->getArrayResult();
 
             return $app['twig']->render('metadata.html.twig', array(
                 'title' => 'Projects',
                 'active_page' => 'project',
-                'path' => ['project' => 'Projects'],
+                'path' => ['project' => ['Projects']],
                 'data' => $results
             ));
 

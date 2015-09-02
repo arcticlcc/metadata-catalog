@@ -16,8 +16,11 @@ use Saxulum\Console\Provider\ConsoleProvider;
 //AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 $app = new Application();
-$app->mount('/project', new MetaCat\Controller\ProjectController());
+$app->mount('/', new MetaCat\Controller\MetadataController());
 $app->mount('/product', new MetaCat\Controller\ProductController());
+$app->mount('/project', new MetaCat\Controller\ProjectController());
+
+
 
 $app -> register(new RoutingServiceProvider());
 $app -> register(new ValidatorServiceProvider());

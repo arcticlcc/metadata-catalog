@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Metadata Catalog</a>
+        <a class="navbar-brand" href="#">Metadata Catalog<sup class="text-danger"> BETA</sup></a>
     </div>
     <div class="collapse navbar-collapse" id="main-navbar">
         <ul class="nav navbar-nav">
@@ -30,9 +30,9 @@
   <li><a href="{{ path('homepage') }}">Home</a></li>
   {% for slug, title in path %}
     {% if loop.last %}
-        <li class="active">{{ title }}</li>
+        <li class="active">{{ title[0] }}</li>
     {% else %}
-        <li><a href="{{ path(slug) }}">{{ title }}</a></li>
+        <li><a href="{{ path(slug) }}">{{ title[0] }}</a></li>
     {% endif %}
   {% endfor %}
   {% else %}
