@@ -27,7 +27,7 @@
                     </ul>
                 </dd>
                 <dt>
-                    Product Title
+                    Project Title
                 </dt>
                 <dd>
                     {{ resource.citation.title }}
@@ -36,32 +36,16 @@
                     Description
                 </dt>
                 <dd>
-                    {{ resource.shortAbstract }}
+                    {{ resource.shortAbstract|default('None Provided.') }}
                 </dd>
             </dl>
-            {% if  data.projectid %}
-            <dl class="dl-horizontal">
-                <dt>
-                    Project ID
-                </dt>
-                <dd>
-                    <a href="{{ path('project') }}{{ data.projectid }}/view">{{ data.projectid }}</a>
-                </dd>
-                <dt>
-                    Project Title
-                </dt>
-                <dd>
-                    {{ data.project.metadata.resourceInfo.citation.title }}
-                </dd>
-            </dl>
-            {% endif %}
         </div>
     </div>
 
     <div class="col-md-12 ">
         <div class="panel panel-default" id="panel1">
             <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseOne">
-                <h4 class="panel-title"><span> Product Abstract</span></h4>
+                <h4 class="panel-title"><span> Project Abstract</span></h4>
 
             </div>
             <div id="collapseOne" class="panel-collapse collapse in">
@@ -70,16 +54,17 @@
                         <span class="pre">{{ resource.abstract }}</span>
                     </p>
                     <p class="">
-                        <span class="text-muted">Purpose: </span><span class="pre">{{ resource.purpose }}</span>
+                        <span class="text-muted">Supplemental Info: </span><span class="pre">{{ resource.supplementalInfo|default('None Provided.') }}</span>
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    {% if resource.keyword is defined and not resource.keyword is empty %}
     <div class="col-md-12 ">
         <div class="panel panel-default" id="panel1">
             <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseTwo">
-                <h4 class="panel-title"><span> Product Keywords</span></h4>
+                <h4 class="panel-title"><span> Project Keywords</span></h4>
 
             </div>
             <div id="collapseTwo" class="panel-collapse collapse in">
@@ -97,10 +82,13 @@
             </div>
         </div>
     </div>
+    {% endif %}
+    {% if not data.products is empty %}
     <div class="col-md-12 ">
         <div class="panel panel-default" id="panel1">
             <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseAssoc">
                 <h4 class="panel-title"><span>Associated Products</span></h4>
+
             </div>
             <div id="collapseAssoc" class="panel-collapse collapse in">
                 <table class="table table-bordered table-hover">
@@ -113,28 +101,21 @@
                     </thead>
                     <tbody>
                         {% set row_type = 'product' %}
-                        {% set row_id = null %}
-                        {% for row in data.json.metadata.associatedResource %}
-                        {% if row.associationType == 'projectProduct' and row.initiativeType == 'project' %}
-                        {% for id in row.resourceCitation.identifier if id.type == 'uuid' and row_id is null %}
-                        {% set row_id = id.identifier %}
-                        {% endfor %}
+                        {% for row in data.products %}
+                        {% set row_id = row.productid %}
                         <tr>
                             <td><a href="{{ path(row_type) }}{{ row_id }}/view">{{ row_id }}</a></td>
-                            <td> {{ row.resourceCitation.title }} </td>
+                            <td> {{ row.json.metadata.resourceInfo.citation.title }} </td>
                             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'json'}) }}">mdJSON</a></td>
                             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'xml'}) }}">ISO 19115-2</a></td>
                             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'html'}) }}">HTML</a></td>
                         </tr>
-                        {% endif %}
                         {% endfor %}
-                        {% if row_id is null  %}
-                        <tr><td colspan="5" class="text-danger">No associated products have been published.</td></tr>
-                        {% endif %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

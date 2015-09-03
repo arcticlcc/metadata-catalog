@@ -25,7 +25,11 @@ $app->mount('/project', new MetaCat\Controller\ProjectController());
 $app -> register(new RoutingServiceProvider());
 $app -> register(new ValidatorServiceProvider());
 $app -> register(new ServiceControllerServiceProvider());
-$app -> register(new TwigServiceProvider());
+$app -> register(new TwigServiceProvider(), [
+    'twig.options' => [
+        'strict_variables' => FALSE,
+    ]
+]);
 $app -> register(new HttpFragmentServiceProvider());
 $app -> register(new DoctrineOrmManagerRegistryProvider());
 $app['twig'] = $app -> extend('twig', function($twig, $app) {
