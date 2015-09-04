@@ -47,12 +47,15 @@ $app->view(function (array $controllerResult, Request $request) use ($app) {
 //default whitelisting
 //TODO: add contextual error messages
 $app->before(function (Request $request) use ($app) {
+    $format = $request->get('format');
 
-    if($format = $request->get('format')) {
-        $app['config']['white']['format'][$format];
+    if($format && !isset($app['config']['white']['format'][$format])) {
+        return new Response($app['twig']->render('errors/404.html.twig', array('code' => 404)), 404);
     }
 
-    if($e = $request->get('entity')) {
-        $app['config']['white']['entity'][$e];
+    $e = $request->get('entity');
+
+    if($e && !isset($app['config']['white']['entity'][$e])) {
+        return new Response($app['twig']->render('errors/404.html.twig', array('code' => 404)), 404);
     }
 });
