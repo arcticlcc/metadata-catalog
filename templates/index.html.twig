@@ -3,18 +3,30 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <h1> Metadata Catalog <small>Browse project and product metadata</small></h1>
-            <p>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-                tellus ac cursus commodo, tortor mauris condimentum nibh,
-                ut fermentum massa justo sit amet risus. Etiam porta sem
-                malesuada magna mollis euismod. Donec sed odio dui.
-            </p>
-            <p>
-                <a class="btn" href="#">View details »</a>
-            </p>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Warning: Currently, this application should only be used for testing purposes.
         </div>
     </div>
+</div>
+<div class="row">
+    <div class="col-lg-7">
+        <h1> Metadata Catalog <small>Browse project and product metadata</small></h1>
+        <p>
+            The Metadata Catalog provides access to project and product(dataset)
+            metadata. While the metadata is provided in multple formats, the
+            catalog utilizes the mdJSON format as a datastore. mdJSON records
+            are parsed to provide information about projects and products.
+        </p>
+        <p>
+            The Catalog application is backed by a RESTful API. Currently, the
+            API is read-only(only GET requests are supported).
+        </p>
+        <p>
+            Feel free to explore, this page will be updated with more
+            documentation soon...
+        </p>
+    </div>
+</div>
 {% endblock %}
