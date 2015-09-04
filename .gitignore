@@ -29,7 +29,9 @@
 # Assets and user uploads
 /web/bundles/
 /web/uploads/
-/web/assets
+/web/assets/
+!/web/favicon
+!/web/favicon.ico
 
 # PHPUnit
 /app/phpunit.xml
