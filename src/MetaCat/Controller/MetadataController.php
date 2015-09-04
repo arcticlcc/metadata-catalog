@@ -32,6 +32,20 @@ class MetadataController implements ControllerProviderInterface {
 
             $em = $app['orm.em'];
 
+            if(isset($app['config']['white']['entity'][$id])) {
+                $em = $app['orm.em'];
+                $class = 'MetaCat\Entity\\' . ucfirst($id);
+
+                $sql = "SELECT json_agg(p.json) as out FROM $id p";
+                $rsm = new ResultSetMappingBuilder($em);
+                $rsm->addRootEntityFromClassMetadata($class, 'p');
+                $rsm->addScalarResult('out', 'out');
+                $query = $em->createNativeQuery($sql, $rsm);
+                $item = $query->getSingleScalarResult();
+
+                return [$item];
+            }
+
             $query = $em->createQuery("SELECT c.$format from MetaCat\Entity\Project c where c.projectid = ?1");
             $query->setParameter(1, $id);
             $item = $query->getSingleScalarResult();
@@ -43,6 +57,7 @@ class MetadataController implements ControllerProviderInterface {
             }
 
             return [trim($item)];
+
         })->value('format', 'json');
 
         return $controllers;
