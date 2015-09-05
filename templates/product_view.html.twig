@@ -84,7 +84,9 @@
             </div>
             <div id="collapseTwo" class="panel-collapse collapse in">
                 <div class="panel-body">
+                    {% if resource.keyword is defined  %}
                     <ul>
+
                         {% for kw in resource.keyword %}
                         {% for k in kw.keyword %}
                         <li>
@@ -93,6 +95,11 @@
                         {% endfor %}
                         {% endfor %}
                     </ul>
+                    {% else %}
+                    <p>
+                        <span class="text-danger">No keywords have been assigned.</span>
+                    </p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -129,7 +136,9 @@
                         {% endif %}
                         {% endfor %}
                         {% if row_id is null  %}
-                        <tr><td colspan="5" class="text-danger">No associated products have been published.</td></tr>
+                        <tr>
+                            <td colspan="5" class="text-danger">No associated products have been published.</td>
+                        </tr>
                         {% endif %}
                     </tbody>
                 </table>
