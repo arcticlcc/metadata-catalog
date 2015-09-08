@@ -11,8 +11,10 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-7">
-        <h1> Metadata Catalog <small>Browse project and product metadata</small></h1>
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-header">
+            <h1> Metadata Catalog <small class="hidden-xs">Browse project and product metadata</small></h1>
+        </div>
         <p>
             The Metadata Catalog provides access to project and product(dataset)
             metadata. While the metadata is provided in multple formats, the
@@ -24,7 +26,10 @@
             API is read-only(only GET requests are supported).
         </p>
         <p>
-            Feel free to explore, this page will be updated with more
+            Use the interface to explore the API. A json array of all
+            <a href="{{ path('metadatabase', {id: 'product', format: 'json'}) }}">Products</a> or
+            <a href="{{ path('metadatabase', {id: 'project', format: 'json'}) }}">Projects</a> is also available.
+            This page will be updated with more
             documentation soon...
         </p>
     </div>

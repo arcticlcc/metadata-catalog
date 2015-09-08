@@ -58,7 +58,9 @@ class MetadataController implements ControllerProviderInterface {
 
             return [trim($item)];
 
-        })->value('format', 'json');
+        })
+        ->bind('metadatabase')
+        ->value('format', 'json');
 
         return $controllers;
     }
