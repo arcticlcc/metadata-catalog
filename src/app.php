@@ -39,6 +39,10 @@ $app['twig'] = $app -> extend('twig', function($twig, $app) {
         return $app['request_stack'] -> getMasterRequest() -> getBasepath() . '/' . ltrim($asset, '/');
     }));
 
+    $twig -> addFunction(new \Twig_SimpleFunction('baseUrl', function() use ($app) {
+        return $app['request_stack'] -> getMasterRequest() -> getSchemeAndHttpHost();
+    }));
+
     return $twig;
 });
 $app['twig.loader.filesystem'] = $app->extend('twig.loader.filesystem',
