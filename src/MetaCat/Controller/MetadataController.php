@@ -22,7 +22,15 @@ class MetadataController implements ControllerProviderInterface {
                ->setParameter(1, $id);
             $query = $qb->getQuery();
 
-            $result = $query->getSingleScalarResult();
+            try {
+                $result = $query->getSingleScalarResult();
+
+            } catch (\Doctrine\ORM\NoResultException $e) {
+
+                throw new \Exception("No record found for id: $id", 404);
+
+            }
+
             return [trim($result)];
         })
         ->bind('metadata')
@@ -46,18 +54,24 @@ class MetadataController implements ControllerProviderInterface {
                 return [$item];
             }
 
-            $query = $em->createQuery("SELECT c.$format from MetaCat\Entity\Project c where c.projectid = ?1");
-            $query->setParameter(1, $id);
-            $item = $query->getSingleScalarResult();
+            try {
+                $query = $em -> createQuery("SELECT c.$format from MetaCat\Entity\Project c where c.projectid = ?1");
+                $query -> setParameter(1, $id);
+                $item = $query -> getSingleScalarResult();
+            } catch (\Doctrine\ORM\NoResultException $e) {
 
-            if(!$item) {
-                $query = $em->createQuery("SELECT c.$format from MetaCat\Entity\Product c where c.productid = ?1");
-                $query->setParameter(1, $id);
-                $item = $query->getSingleScalarResult();
+                try {
+                    $query = $em -> createQuery("SELECT c.$format from MetaCat\Entity\Product c where c.productid = ?1");
+                    $query -> setParameter(1, $id);
+                    $item = $query -> getSingleScalarResult();
+
+                } catch (\Doctrine\ORM\NoResultException $e) {
+
+                    throw new \Exception("No record found for id: $id", 404);
+
+                }
             }
-
             return [trim($item)];
-
         })
         ->bind('metadatabase')
         ->value('format', 'json');
