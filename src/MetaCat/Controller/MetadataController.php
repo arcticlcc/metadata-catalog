@@ -6,6 +6,7 @@ use Silex\Api\ControllerProviderInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MetadataController implements ControllerProviderInterface {
     public function connect(Application $app) {
@@ -27,8 +28,7 @@ class MetadataController implements ControllerProviderInterface {
 
             } catch (\Doctrine\ORM\NoResultException $e) {
 
-                throw new \Exception("No record found for id: $id", 404);
-
+                throw new HttpException(404, "No record found for id: $id");
             }
 
             return [trim($result)];
@@ -67,7 +67,7 @@ class MetadataController implements ControllerProviderInterface {
 
                 } catch (\Doctrine\ORM\NoResultException $e) {
 
-                    throw new \Exception("No record found for id: $id", 404);
+                    throw new HttpException(404, "No record found for id: $id");
 
                 }
             }
