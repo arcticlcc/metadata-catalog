@@ -35,3 +35,20 @@ p.pre, span.pre {
 td {
     max-width: 200px;
 }
+
+//fix dt column widths
+#api-definitions .dl-horizontal {
+
+  dd {
+      margin-bottom: 10px;
+  }
+
+  @media (min-width: @grid-float-breakpoint) {
+    dt {
+      width: (@dl-horizontal-offset + 5);
+    }
+    dd {
+      margin-left: (@dl-horizontal-offset + 25);
+    }
+  }
+}
