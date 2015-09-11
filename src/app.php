@@ -19,6 +19,7 @@ $app = new Application();
 $app->mount('/product', new MetaCat\Controller\ProductController());
 $app->mount('/project', new MetaCat\Controller\ProjectController());
 $app->mount('/', new MetaCat\Controller\MetadataController());
+$app->mount('/', new MetaCat\Controller\RedirectController());
 
 
 
