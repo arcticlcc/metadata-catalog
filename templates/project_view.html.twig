@@ -104,7 +104,7 @@
                         {% for row in data.products %}
                         {% set row_id = row.productid %}
                         <tr>
-                            <td><a href="{{ path(row_type) }}{{ row_id }}/view">{{ row_id }}</a></td>
+                            <td><a href="{{ path(row_type ~ 'view', {id:row_id}) }}">{{ row_id }}</a></td>
                             <td> {{ row.json.metadata.resourceInfo.citation.title }} </td>
                             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'json'}) }}">mdJSON</a></td>
                             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'xml'}) }}">ISO 19115-2</a></td>

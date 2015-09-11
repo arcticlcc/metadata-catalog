@@ -10,7 +10,7 @@
     <tbody>
         {% for row in data %}
         <tr>
-            <td> <a href="{{ path(active_page) }}{{ row.id }}/view">{{ row.id }}</a> </td>
+            <td> <a href="{{ path(active_page ~ 'view', {id: row.id}) }}">{{ row.id }}</a> </td>
             <td> {{ row.title }} </td>
             <td> {{ row.owner }} </td>
             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'json'}) }}">mdJSON</a></td>

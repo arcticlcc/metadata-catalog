@@ -45,7 +45,7 @@
                     Project ID
                 </dt>
                 <dd>
-                    <a href="{{ path('project') }}{{ data.projectid }}/view">{{ data.projectid }}</a>
+                    <a href="{{ path('projectview', {id:data.projectid}) }}">{{ data.projectid }}</a>
                 </dd>
                 <dt>
                     Project Title
@@ -127,7 +127,7 @@
                         {% set row_id = id.identifier %}
                         {% endfor %}
                         <tr>
-                            <td><a href="{{ path(row_type) }}{{ row_id }}/view">{{ row_id }}</a></td>
+                            <td><a href="{{ path(row_type ~ 'view', {id:row_id}) }}">{{ row_id }}</a></td>
                             <td> {{ row.resourceCitation.title }} </td>
                             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'json'}) }}">mdJSON</a></td>
                             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: row_type, id: row_id, format: 'xml'}) }}">ISO 19115-2</a></td>

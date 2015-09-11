@@ -1,3 +1,5 @@
+RedirectMatch permanent ^/api/?(.*)$ /$1
+
 <IfModule mod_rewrite.c>
     Options -MultiViews
 

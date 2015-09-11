@@ -9,7 +9,7 @@ class ProductController implements ControllerProviderInterface {
     public function connect(Application $app) {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', function(Application $app) {
+        $controllers->get('/view', function(Application $app) {
 
             $em = $app['orm.em'];
             $sql = "SELECT p.productid as id,
@@ -37,7 +37,7 @@ class ProductController implements ControllerProviderInterface {
         })->bind('product');
 
         $controllers->get('/{id}/view', function(Application $app, $id) {
-
+            //TODO: add error handling
             $em = $app['orm.em'];
                 $query = $em->createQuery("SELECT c.productid as id, c.json, c.projectid, p.json as project from MetaCat\Entity\Product c LEFT JOIN c.project p where c.productid = ?1");
                 $query->setParameter(1, $id);

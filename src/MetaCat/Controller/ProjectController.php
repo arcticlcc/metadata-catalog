@@ -9,7 +9,7 @@ class ProjectController implements ControllerProviderInterface {
     public function connect(Application $app) {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', function(Application $app) {
+        $controllers->get('/view', function(Application $app) {
 
             $em = $app['orm.em'];
             $sql = "SELECT p.projectid as id,

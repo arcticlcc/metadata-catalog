@@ -6,6 +6,7 @@ use Silex\Api\ControllerProviderInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MetadataController implements ControllerProviderInterface {
     public function connect(Application $app) {
@@ -22,7 +23,14 @@ class MetadataController implements ControllerProviderInterface {
                ->setParameter(1, $id);
             $query = $qb->getQuery();
 
-            $result = $query->getSingleScalarResult();
+            try {
+                $result = $query->getSingleScalarResult();
+
+            } catch (\Doctrine\ORM\NoResultException $e) {
+
+                throw new HttpException(404, "No record found for id: $id");
+            }
+
             return [trim($result)];
         })
         ->bind('metadata')
@@ -46,19 +54,27 @@ class MetadataController implements ControllerProviderInterface {
                 return [$item];
             }
 
-            $query = $em->createQuery("SELECT c.$format from MetaCat\Entity\Project c where c.projectid = ?1");
-            $query->setParameter(1, $id);
-            $item = $query->getSingleScalarResult();
+            try {
+                $query = $em -> createQuery("SELECT c.$format from MetaCat\Entity\Project c where c.projectid = ?1");
+                $query -> setParameter(1, $id);
+                $item = $query -> getSingleScalarResult();
+            } catch (\Doctrine\ORM\NoResultException $e) {
 
-            if(!$item) {
-                $query = $em->createQuery("SELECT c.$format from MetaCat\Entity\Product c where c.productid = ?1");
-                $query->setParameter(1, $id);
-                $item = $query->getSingleScalarResult();
+                try {
+                    $query = $em -> createQuery("SELECT c.$format from MetaCat\Entity\Product c where c.productid = ?1");
+                    $query -> setParameter(1, $id);
+                    $item = $query -> getSingleScalarResult();
+
+                } catch (\Doctrine\ORM\NoResultException $e) {
+
+                    throw new HttpException(404, "No record found for id: $id");
+
+                }
             }
-
             return [trim($item)];
-
-        })->value('format', 'json');
+        })
+        ->bind('metadatabase')
+        ->value('format', 'json');
 
         return $controllers;
     }

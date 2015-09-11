@@ -16,9 +16,10 @@ use Saxulum\Console\Provider\ConsoleProvider;
 //AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 $app = new Application();
-$app->mount('/', new MetaCat\Controller\MetadataController());
 $app->mount('/product', new MetaCat\Controller\ProductController());
 $app->mount('/project', new MetaCat\Controller\ProjectController());
+$app->mount('/', new MetaCat\Controller\MetadataController());
+$app->mount('/', new MetaCat\Controller\RedirectController());
 
 
 
@@ -37,6 +38,10 @@ $app['twig'] = $app -> extend('twig', function($twig, $app) {
 
     $twig -> addFunction(new \Twig_SimpleFunction('asset', function($asset) use ($app) {
         return $app['request_stack'] -> getMasterRequest() -> getBasepath() . '/' . ltrim($asset, '/');
+    }));
+
+    $twig -> addFunction(new \Twig_SimpleFunction('baseUrl', function() use ($app) {
+        return $app['request_stack'] -> getMasterRequest() -> getSchemeAndHttpHost();
     }));
 
     return $twig;
