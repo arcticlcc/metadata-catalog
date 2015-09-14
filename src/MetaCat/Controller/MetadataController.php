@@ -76,6 +76,49 @@ class MetadataController implements ControllerProviderInterface {
         ->bind('metadatabase')
         ->value('format', 'json');
 
+        $controllers->get('{entity1}/{id}/{entity2}.{format}', function(Application $app, Request $request, $entity1, $id, $entity2) {
+
+            $em = $app['orm.em'];
+            $white = $app['config']['white']['entity'];
+
+            if(isset($white[$entity1], $white[$entity2])) {
+                $em = $app['orm.em'];
+                $class = 'MetaCat\Entity\\' . ucfirst($entity2);
+                $class2 = 'MetaCat\Entity\\' . ucfirst($entity1);
+                $col = $request->get('short') ? 'p.json#>\'{metadata,resourceInfo,citation}\'' : 'p.json';
+
+                $sql = "SELECT json_agg($col) as out FROM $entity2 p JOIN $entity1 p2 USING(projectid) WHERE p2.{$entity1}id = ?";
+                $rsm = new ResultSetMappingBuilder($em);
+                $rsm->addRootEntityFromClassMetadata($class, 'p');
+                $rsm->addJoinedEntityResult($class2, 'p2', 'p', 'projectid');
+                $rsm->addScalarResult('out', 'out');
+                $query = $em->createNativeQuery($sql, $rsm);
+                $query->setParameter(1, $id);
+
+            } else {
+                throw new HttpException(403, 'Entity name not allowed. Valid entities are: ' . join('|', array_keys($white)));
+
+            }
+
+            try {
+                $recs = $query->getScalarResult();
+                $out = @$recs[0]['out'];
+
+                if($out) {
+                    $request->request->set('format','json');
+                    return [$out];
+
+                } else {
+                    throw new HttpException(404, "No $entity2(s) found for $entity1 id: $id");
+                }
+
+            } catch (\Doctrine\ORM\NoResultException $e) {
+                throw new HttpException(404, "No record found for id: $id");
+
+            }
+        })->bind('related')
+        ->value('format', 'json');
+
         return $controllers;
     }
 

@@ -70,7 +70,7 @@
                     .../{entity}/{uuid}[.{format}]
                 </dt>
                 <dd>
-                    Returns a web page displaying a list of entities
+                    Returns a single entity corresponding to the supplied uuid, in the desired format
                     <ul>
                         <li>
                             <i>entity</i> = [project | product]
@@ -98,6 +98,30 @@
                         <li>
                             Note: a request to <i>.../{entity}/{uuid}/</i> will redirect to
                             <i>.../{entity}/{uuid}/view</i>
+                        </li>
+                    </ul>
+                </dd>
+                <dt>
+                    .../{entity1}/{id}/{entity2}[.{format}][?short=true]
+                </dt>
+                <dd>
+                    Returns an array of related entities in the desired format
+                    <ul>
+                        <li>
+                            <i>entity1</i> = [project | product]
+                        </li>
+                        <li>
+                            <i>id</i> = a valid UUID for entity1
+                        </li>
+                        <li>
+                            <i>entity2</i> = [project | product]
+                        </li>
+                        <li>
+                            <i>format</i> = [<strong>json</strong>]
+                        </li>
+                        <li>
+                            <i>short</i> = boolean [<strong>false</strong> | true]:
+                            if true, will return an array of citations for entity2
                         </li>
                     </ul>
                 </dd>
