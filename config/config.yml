@@ -1,4 +1,3 @@
-debug: true
 imports:
     databases:
         resource: 'db.yml'
@@ -6,3 +5,5 @@ imports:
         resource: 'nav.yml'
     white:
         resource: 'whitelist.yml'
+    aws:
+        resource: 'aws.yml'

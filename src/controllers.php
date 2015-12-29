@@ -7,6 +7,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
+$app->mount('/sync', new MetaCat\Controller\SyncController());
+$app->mount('/product', new MetaCat\Controller\ProductController());
+$app->mount('/project', new MetaCat\Controller\ProjectController());
+$app->mount('/', new MetaCat\Controller\MetadataController());
+$app->mount('/', new MetaCat\Controller\RedirectController());
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig', array('title' => 'Home'));

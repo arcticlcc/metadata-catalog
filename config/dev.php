@@ -16,7 +16,6 @@ $app->register(new MonologServiceProvider(), array(
 
 $app->register(new WebProfilerServiceProvider(), array(
     'profiler.cache_dir' => __DIR__.'/../var/cache/profiler',
-    'profiler.mount_prefix' => '/_silex/profiler',
 ));
 
 $app->register(new DebugServiceProvider(), array(

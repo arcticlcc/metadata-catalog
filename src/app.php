@@ -9,19 +9,14 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider;
 use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Saxulum\AsseticTwig\Provider\AsseticTwigProvider;
-use Saxulum\Console\Provider\ConsoleProvider;
+use DerAlex\Pimple\YamlConfigServiceProvider;
+use Aws\Sdk;
 //use Boldtrn\JsonbBundle\Types\JsonbArrayType;
 //use Doctrine\Common\Annotations\AnnotationRegistry;
 
 //AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 $app = new Application();
-$app->mount('/product', new MetaCat\Controller\ProductController());
-$app->mount('/project', new MetaCat\Controller\ProjectController());
-$app->mount('/', new MetaCat\Controller\MetadataController());
-$app->mount('/', new MetaCat\Controller\RedirectController());
-
-
 
 $app -> register(new RoutingServiceProvider());
 $app -> register(new ValidatorServiceProvider());
@@ -59,7 +54,9 @@ $app->register(new AsseticTwigProvider(), array(
 ));
 //set directory for config files
 $app['config.dir'] = __DIR__.'/../config/';
-$app -> register(new DerAlex\Pimple\YamlConfigServiceProvider($app['config.dir'] . 'config.yml'));
+$app -> register(new YamlConfigServiceProvider($app['config.dir'] . 'config.yml', [
+    'basepath' => realpath(__DIR__.'/..')
+]));
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => $app['config']['dbs']
 ));
@@ -92,5 +89,11 @@ $app->register(new DoctrineOrmServiceProvider, array(
     )
 ));
 $app['orm.em']->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb','jsonb');
-$app->register(new ConsoleProvider($app));
+
+$app->register(new MetaCat\Service\ImportDbalService, array());
+
+$app['aws'] = new Aws\Sdk(
+    $app['config']['aws']
+);
+
 return $app;

@@ -7,3 +7,6 @@ white:
   entity:
     product: true
     project: true
+  sync:
+    bucket: YOUR_BUCKET
+    key: "sqlite/metadata.sqlite3.gz"

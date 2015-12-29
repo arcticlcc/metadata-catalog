@@ -1,5 +1,11 @@
+# Project specific
+config/whitelist.yml
+/config/aws.yml
 /config/db.yml
+/config/aws.json
 /.project
+/var/data/*.sqlite3
+
 *.*~
 
 # Cache and logs (Symfony2)

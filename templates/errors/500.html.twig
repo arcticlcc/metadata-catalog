@@ -1,5 +1,9 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-    Internal server error.
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+        There's been a server error. It's been logged. You may
+        want to check your request.
+    </div>
 {% endblock %}

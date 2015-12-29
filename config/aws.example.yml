@@ -1,0 +1,8 @@
+---
+aws:
+  region: "us-west-2"
+  credentials:
+    key: YOUR_AWS_ACCESS_KEY_ID
+    secret: YOUR_AWS_SECRET_ACCESS_KEY
+  S3:
+    version: "2006-03-01"

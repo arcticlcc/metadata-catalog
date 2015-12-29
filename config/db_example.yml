@@ -1,0 +1,14 @@
+---
+dbs:
+  psql:
+     dbname: metadata_catalog
+     driver: pdo_pgsql
+     port: 5432
+     host: localhost
+     password: YOUR_PASSWORD
+     user: YOUR_USERNAME
+     charset: utf8
+  import:
+     driver: pdo_sqlite
+     path: %basepath%/var/data/metadata.sqlite3
+     charset: utf8
