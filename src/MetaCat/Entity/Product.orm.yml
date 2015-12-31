@@ -9,6 +9,7 @@ MetaCat\Entity\Product:
         joinColumn:
           name: projectid
           referencedColumnName: projectid
+          onDelete: SET NULL
     id:
         productid:
             type: guid

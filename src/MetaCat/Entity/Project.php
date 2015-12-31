@@ -16,6 +16,19 @@ class Project {
     }
 
     /**
+     * Set projectid
+     *
+     * @param string $id
+     *
+     * @return Project
+     */
+    public function setProjectid($id) {
+        $this->projectid = $id;
+
+        return $this;
+    }
+
+    /**
      * Get projectid
      *
      * @return guid

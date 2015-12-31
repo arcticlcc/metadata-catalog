@@ -9,7 +9,20 @@ class Product {
     protected $xml;
 
     private $project;
-    private $projectid;
+    protected $projectid;
+
+    /**
+     * Set productid
+     *
+     * @param string $id
+     *
+     * @return Product
+     */
+    public function setProductid($id) {
+        $this->productid = $id;
+
+        return $this;
+    }
 
     /**
      * Get productid
@@ -29,7 +42,6 @@ class Product {
      */
     public function setProjectid($projectid) {
         $this->projectid = $projectid;
-
         return $this;
     }
 
