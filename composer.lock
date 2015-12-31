@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f3ecc3c8b1f1b2c8fabe7a45ec38efd7",
-    "content-hash": "73bc8b000104b5d98b702cb39093399b",
+    "hash": "791ddd17fe2be894d70e8e1a134394ba",
+    "content-hash": "9b9498b87aa3eeb8887b3a05a9ed57d5",
     "packages": [
         {
             "name": "aws/aws-php-sns-message-validator",
@@ -259,20 +259,20 @@
         },
         {
             "name": "deralex/yaml-config-service-provider",
-            "version": "2.0.x-dev",
+            "version": "dev-silex2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/deralex/YamlConfigServiceProvider.git",
-                "reference": "6a55520dd4825ee3c0d24ba721757c34013047d4"
+                "url": "https://github.com/jlblcc/YamlConfigServiceProvider.git",
+                "reference": "4f6e5087ea022307a82ba1a64864fcb3bb06b5d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deralex/YamlConfigServiceProvider/zipball/6a55520dd4825ee3c0d24ba721757c34013047d4",
-                "reference": "6a55520dd4825ee3c0d24ba721757c34013047d4",
+                "url": "https://api.github.com/repos/jlblcc/YamlConfigServiceProvider/zipball/4f6e5087ea022307a82ba1a64864fcb3bb06b5d0",
+                "reference": "4f6e5087ea022307a82ba1a64864fcb3bb06b5d0",
                 "shasum": ""
             },
             "require": {
-                "pimple/pimple": "~3.0",
+                "silex/silex": "2.0.*@dev",
                 "symfony/yaml": "~2.4"
             },
             "require-dev": {
@@ -292,7 +292,6 @@
                     "DerAlex\\Pimple": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -304,10 +303,12 @@
             ],
             "description": "Silex ServiceProvider for using YAML configuration files",
             "keywords": [
-                "pimple",
                 "silex"
             ],
-            "time": "2015-03-10 13:55:26"
+            "support": {
+                "source": "https://github.com/jlblcc/YamlConfigServiceProvider/tree/silex2"
+            },
+            "time": "2015-09-07 16:25:20"
         },
         {
             "name": "dflydev/doctrine-orm-service-provider",

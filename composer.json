@@ -14,6 +14,9 @@
           "type": "file"
         }
       }
+    }, {
+      "type": "vcs",
+      "url": "https://github.com/jlblcc/YamlConfigServiceProvider.git"
     }
   ],
   "require": {
@@ -51,7 +54,7 @@
     "aws/aws-sdk-php": "^3.12",
     "ddeboer/data-import": "@stable",
     "symfony/yaml": "~2.4",
-    "deralex/yaml-config-service-provider": "2.0.x-dev",
+    "deralex/yaml-config-service-provider": "dev-silex2",
     "aws/aws-php-sns-message-validator": "^1.1"
   },
   "autoload": {
