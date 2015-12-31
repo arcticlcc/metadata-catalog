@@ -43,15 +43,20 @@ class ProductController implements ControllerProviderInterface {
                 $query->setParameter(1, $id);
                 $item = $query->getArrayResult();
 
-            return $app['twig']->render('product_view.html.twig', array(
-                'title' => "Product: {$item[0]['id']}",
-                'active_page' => 'product',
-                'path' => [
-                    'product' => ['Products'],
-                    'view' => ['View'],
-                ],
-                'data' => $item[0]
-            ));
+            if ($item) {
+                return $app['twig']->render('product_view.html.twig', array(
+                    'title' => "Product: {$item[0]['id']}",
+                    'active_page' => 'product',
+                    'path' => [
+                        'product' => ['Products'],
+                        'view' => ['View'],
+                    ],
+                    'data' => $item[0]
+                ));
+            } else {
+                $app->abort(404, "No item found with id: $id.");
+            }
+
 
         })->bind('productview');
 

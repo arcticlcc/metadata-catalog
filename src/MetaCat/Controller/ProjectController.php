@@ -43,18 +43,22 @@ class ProjectController implements ControllerProviderInterface {
                     LEFT JOIN c.products p where c.projectid = ?1");
                 $query->setParameter(1, $id);
                 $item = $query->getArrayResult();
-                //set the id alias manually
-                $item[0]['id'] = $item[0]['projectid'];
 
-            return $app['twig']->render('project_view.html.twig', array(
-                'title' => "Project: {$item[0]['id']}",
-                'active_page' => 'project',
-                'path' => [
-                    'project' => ['Projects'],
-                    'view' => ['View'],
-                ],
-                'data' => $item[0]
-            ));
+                if($item) {
+                    //set the id alias manually
+                    $item[0]['id'] = $item[0]['projectid'];
+                    return $app['twig']->render('project_view.html.twig', array(
+                        'title' => "Project: {$item[0]['id']}",
+                        'active_page' => 'project',
+                        'path' => [
+                            'project' => ['Projects'],
+                            'view' => ['View'],
+                        ],
+                        'data' => $item[0]
+                    ));
+                } else {
+                    $app->abort(404, "No item found with id: $id.");
+                }
 
         })->bind('projectview');
 
