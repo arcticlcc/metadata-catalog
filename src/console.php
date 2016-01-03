@@ -21,6 +21,7 @@ use Saxulum\DoctrineOrmCommands\Command\Proxy\UpdateSchemaDoctrineCommand;
 use Saxulum\DoctrineOrmCommands\Command\Proxy\ValidateSchemaCommand;
 use Saxulum\DoctrineOrmCommands\Helper\ManagerRegistryHelper;
 use Saxulum\AsseticTwig\Command\AsseticDumpCommand;
+use MetaCat\Console\MetadataImportDbal;
 
 $app['console'] = $app->extend('console', function (ConsoleApplication $consoleApplication) use ($app) {
     $consoleApplication->setAutoExit(false);
@@ -49,6 +50,11 @@ $app['console.commands'] = $app->extend('console.commands', function ($commands)
     $commands[] = new ValidateSchemaCommand;
     $commands[] = new EnsureProductionSettingsDoctrineCommand;
     $commands[] = new AsseticDumpCommand;
+
+    $command = new MetadataImportDbal;
+    $command->setContainer($app);
+    $commands[] = $command;
+
     return $commands;
 });
 
