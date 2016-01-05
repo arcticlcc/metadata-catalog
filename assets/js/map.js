@@ -1,5 +1,5 @@
 $(function() {
-  if ( typeof L === "object" && MetaCat.extents.length > 0) {
+  if ( typeof L === "object" && MetaCat.extents && MetaCat.extents.length > 0) {
     (function() {
       var extents = MetaCat.extents;
       var mqAttr = '<span>Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></span>';
