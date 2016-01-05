@@ -1,0 +1,23 @@
+{% extends "layout.html.twig" %}
+{% set resource = data.json.metadata.resourceInfo %}
+{% set contacts = {} %}
+
+{% for contact in data.json.contact %}
+    {% set contacts = contacts|merge({('_' ~ contact.contactId): contact}) %}
+{% endfor %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% if resource.extent is defined and not resource.extent is empty %}
+    {% set geo = [] %}
+    {% for item in resource.extent %}
+        {% if item.geographicElement is defined and not item.geographicElement is empty %}
+            {% set geo = geo|merge({ (loop.index0): item}) %}
+        {% endif %}
+    {% endfor %}
+    {% block geojson %}
+        <script>MetaCat.extents = {{ geo|json_encode()|raw }};</script>
+    {% endblock %}
+{% endif %}
+
+{% block content %}{% endblock %}

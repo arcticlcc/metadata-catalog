@@ -1,0 +1,31 @@
+{% if not geo is empty %}
+    <div class="col-md-12 ">
+        <div class="panel panel-default">
+            <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapse-map">
+                <h4 class="panel-title"><span>Map</span></h4>
+            </div>
+            <div id="collapse-map" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                    <ul class="nav nav-pills nav-stacked col-sm-3" role="tablist">
+                        {% for el in geo %}
+                            {% set id = 'geo-' ~ loop.index0 %}
+                        <li role="presentation" class="{{ loop.first ? 'active' }}">
+                            <a href="#{{ id }}" aria-controls="{{ id }}" role="tab" data-toggle="pill">
+                                {{ el.description ?: 'Extent ' ~ loop.index0 }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content col-sm-9">
+                        {% for el in geo %}
+                            {% set id = 'geo-' ~ loop.index0 %}
+                        <div role="tabpanel" class="tab-pane tab-map fade {{ loop.first ? 'active in' }}" id="{{ id }}">
+                        </div>
+                        {% endfor %}
+                    </div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
