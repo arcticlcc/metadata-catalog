@@ -1,6 +1,4 @@
-{% extends "layout.html.twig" %}
-{% set resource = data.json.metadata.resourceInfo %}
-{% block title %} {{ title }} {% endblock %}
+{% extends "item_view.html.twig" %}
 
 {% block content %}
 <div class="row">
@@ -39,11 +37,13 @@
                     {{ resource.shortAbstract|default('None Provided.') }}
                 </dd>
             </dl>
+
+            {% include 'includes/poc.html.twig' %}
         </div>
     </div>
 
     <div class="col-md-12 ">
-        <div class="panel panel-default" id="panel1">
+        <div class="panel panel-default">
             <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseOne">
                 <h4 class="panel-title"><span> Project Abstract</span></h4>
 
@@ -60,33 +60,12 @@
             </div>
         </div>
     </div>
-    {% if resource.keyword is defined and not resource.keyword is empty %}
-    <div class="col-md-12 ">
-        <div class="panel panel-default" id="panel1">
-            <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseTwo">
-                <h4 class="panel-title"><span> Project Keywords</span></h4>
-
-            </div>
-            <div id="collapseTwo" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <ul>
-                        {% for kw in resource.keyword %}
-                        {% for k in kw.keyword %}
-                        <li>
-                            {{ k }}
-                        </li>
-                        {% endfor %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
+    {% include 'includes/links.html.twig' with {'record_type': 'Project'} %}
+    {% include 'includes/keywords.html.twig' with {'record_type': 'Project'} %}
     {% include 'includes/map.html.twig' %}
     {% if not data.products is empty %}
     <div class="col-md-12 ">
-        <div class="panel panel-default" id="panel1">
+        <div class="panel panel-default">
             <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapseAssoc">
                 <h4 class="panel-title"><span>Associated Products</span></h4>
 

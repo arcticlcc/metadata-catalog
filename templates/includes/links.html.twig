@@ -1,0 +1,50 @@
+{% set links = [] %}
+
+{% if data.json.metadata.distributionInfo is defined %}
+    {% for di in data.json.metadata.distributionInfo %}
+        {% if di.distributorTransferOptions is defined %}
+            {% for dt in di.distributorTransferOptions %}
+                {% if dt.online is defined %}
+                        {% set links = links|merge(dt.online) %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% set links = links|merge(resource.citation.onlineResource ?: []) %}
+
+    <div class="col-md-12 ">
+        <div class="panel panel-default">
+            <div class="panel-heading collapsible" data-toggle="collapse" data-target="#collapse-links">
+                <h4 class="panel-title"><span> {{ record_type }} Links</span></h4>
+
+            </div>
+            <div id="collapse-links" class="panel-collapse collapse in">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th> Name </th>
+                            <th> Description </th>
+                            <th> Function </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if links is empty %}
+                        <tr>
+                            <td colspan="2" class="text-danger">No links are associated with this {{ record_type }}.</td>
+                        </tr>
+                        {% else %}
+                        {% for link in links %}
+                        <tr>
+                            <td><a href="{{ link.uri }}">{{ link.name ?: 'Unnamed Link' }}</a></td>
+                            <td>{{ (link.description ?: '<span class="text-warning">No description provided.</span>')|raw }}</td>
+                            <td>{{ (link.function ?: '<span class="text-warning">No function provided.</span>')|raw }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
