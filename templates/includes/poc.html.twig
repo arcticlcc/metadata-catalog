@@ -23,8 +23,8 @@
             <abbr title="{{ (ph.service|join(', '))|title }}">{{ abbr|upper }}:</abbr> {{ ph.phoneNumber }}
             {% else %}
             <abbr title="Phone">P:</abbr> ph.phoneNumber
-            {% endif %}
-          {% endfor %}<br/>
+            {% endif %}<br/>
+          {% endfor %}
           {{ (contact.address.electronicMailAddress is not empty ? "<a href=\"mailto:#{contact.address.electronicMailAddress|first}\">#{contact.address.electronicMailAddress|first}</a><br/>")|raw }}
           {{ (contact.onlineResource is not empty ? "<a href=\"#{(contact.onlineResource|first).uri}\">#{(contact.onlineResource|first).uri}</a>")|raw }}
         </address>
