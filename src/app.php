@@ -86,7 +86,8 @@ $app->register(new DoctrineOrmServiceProvider, array(
         'JSONB_AG' => 'Boldtrn\JsonbBundle\Query\JsonbAtGreater',
         'JSONB_HGG' => 'Boldtrn\JsonbBundle\Query\JsonbHashGreaterGreater',
         'JSONB_EX' => 'Boldtrn\JsonbBundle\Query\JsonbExistence',
-    )
+    ),
+    'orm.proxies_dir' => __DIR__.'/../var/cache/doctrine/proxies',
 ));
 $app['orm.em']->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb','jsonb');
 

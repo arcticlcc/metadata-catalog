@@ -70,29 +70,34 @@ class SyncController implements ControllerProviderInterface {
                         'SaveAs' => $temp
                     ]);
 
-                    //Validate md5(skip for multi-part)
-                    $s3Etag = str_replace('"', '', $result['ETag']);
-                    if(md5_file($temp) !== $s3Etag || strpos($s3Etag, '-') !== FALSE) {
-                        throw new \Exception('S3 exception. md5 validation failed.');
+                    if(file_exists($temp)) {
+                        //Validate md5(skip for multi-part)
+                        $s3Etag = str_replace('"', '', $result['ETag']);
+                        if(md5_file($temp) !== $s3Etag || strpos($s3Etag, '-') !== FALSE) {
+                            throw new \Exception('S3 exception. md5 validation failed.');
+                        }
+                        //unzip the contents
+                        // Open our files (in binary mode)
+                        $zip = gzopen($temp, 'rb');
+                        $out = fopen(str_replace('.gz', '', $temp), 'wb');
+
+                        // Keep repeating until the end of the input file
+                        while(!gzeof($zip)) {
+                            // Read buffer-size bytes
+                            // Both fwrite and gzread and binary-safe
+                            fwrite($out, gzread($zip, 4096));
+                        }
+
+                        // Files are done, close files
+                        fclose($out);
+                        gzclose($zip);
+                        unlink($temp);
+
+                        $app['import.dbal']();
+                    } else {
+                        throw new Exception("Error retrieving file from S3. $temp
+                          does not exist.");
                     }
-                    //unzip the contents
-                    // Open our files (in binary mode)
-                    $zip = gzopen($temp, 'rb');
-                    $out = fopen(str_replace('.gz', '', $temp), 'wb');
-
-                    // Keep repeating until the end of the input file
-                    while(!gzeof($zip)) {
-                        // Read buffer-size bytes
-                        // Both fwrite and gzread and binary-safe
-                        fwrite($out, gzread($zip, 4096));
-                    }
-
-                    // Files are done, close files
-                    fclose($out);
-                    gzclose($zip);
-                    unlink($temp);
-
-                    $app['import.dbal']();
 
                 } catch (S3Exception $e) {
                     // Catch an S3 specific exception.

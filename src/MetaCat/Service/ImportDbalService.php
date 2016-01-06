@@ -47,7 +47,7 @@ class ImportDbalService implements ServiceProviderInterface
                 );
 
                 // Create the workflow from the reader
-                $workflow = new Workflow($reader, $app['monolog']);
+                $workflow = new Workflow($reader, isset($app['monolog']) ? $app['monolog'] : NULL);
 
                 // Create a writer: you need Doctrine’s EntityManager.
                 $doctrineWriter = new DoctrineWriter($em, $class);
