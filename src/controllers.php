@@ -14,7 +14,10 @@ $app->mount('/', new MetaCat\Controller\MetadataController());
 $app->mount('/', new MetaCat\Controller\RedirectController());
 
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('index.html.twig', array('title' => 'Home'));
+    return $app['twig']->render('index.html.twig', array(
+        'title' => 'Home',
+        'index_dev' => is_readable(realpath($app['config.dir'].'../web/index_dev.php'))
+    ));
 })
 ->bind('homepage');
 
