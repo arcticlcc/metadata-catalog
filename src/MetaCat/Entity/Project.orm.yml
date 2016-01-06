@@ -15,5 +15,8 @@ MetaCat\Entity\Project:
             type: jsonb
         xml:
             type: text
+            nullable: true
         html:
             type: text
+            nullable: true
+            

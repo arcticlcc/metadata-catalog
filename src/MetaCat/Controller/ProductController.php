@@ -13,15 +13,19 @@ class ProductController implements ControllerProviderInterface {
 
             $em = $app['orm.em'];
             $sql = "SELECT p.productid as id,
+                html IS NOT NULL as has_html,
+                xml IS NOT NULL as has_xml,
                 p.json#>>'{metadata,resourceInfo,citation,title}' as title,
                 (SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c WHERE
                     c->'contactId' = (SELECT value FROM jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS role WHERE
                     role@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId') ->>'organizationName' as owner
                 FROM product p";
             $rsm = new ResultSetMappingBuilder($em);
-            $rsm->addRootEntityFromClassMetadata('MetaCat\Entity\Project', 'p');
+            $rsm->addRootEntityFromClassMetadata('MetaCat\Entity\Product', 'p');
             //$rsm->addFieldResult('p', 'id', 'projectid');
             $rsm->addScalarResult('id', 'id');
+            $rsm->addScalarResult('has_html', 'has_html');
+            $rsm->addScalarResult('has_xml', 'has_xml');
             $rsm->addScalarResult('title', 'title');
             $rsm->addScalarResult('owner', 'owner');
             $query = $em->createNativeQuery($sql, $rsm);

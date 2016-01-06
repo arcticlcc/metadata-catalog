@@ -8,15 +8,21 @@
         </tr>
     </thead>
     <tbody>
+        {% if data is empty %}
+        <tr>
+            <td colspan="4" class="text-danger">No {{ active_page }}s found.</td>
+        </tr>
+        {% else %}
         {% for row in data %}
         <tr>
             <td> <a href="{{ path(active_page ~ 'view', {id: row.id}) }}">{{ row.id }}</a> </td>
             <td> {{ row.title }} </td>
             <td> {{ row.owner }} </td>
             <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'json'}) }}">mdJSON</a></td>
-            <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'xml'}) }}">ISO 19115-2</a></td>
-            <td class="text-center text-nowrap"><a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'html'}) }}">HTML</a></td>
+            <td class="text-center text-nowrap">{% if row.has_xml %}<a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'xml'}) }}">ISO 19115-2</a>{% else %}ISO 19115-2{% endif %}</td>
+            <td class="text-center text-nowrap">{% if row.has_html %}<a href="{{ path('metadata', {entity: active_page, id: row.id, format: 'html'}) }}">HTML</a>{% else %}HTML{% endif %}</td>
         </tr>
         {% endfor %}
+        {% endif %}
     </tbody>
 </table>

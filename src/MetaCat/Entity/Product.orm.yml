@@ -22,5 +22,8 @@ MetaCat\Entity\Product:
             type: jsonb
         xml:
             type: text
+            nullable: true
         html:
             type: text
+            nullable: true
+            
