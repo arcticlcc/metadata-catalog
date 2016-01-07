@@ -56,7 +56,7 @@ class ImportDbalService implements ServiceProviderInterface
                 //set related entity
                 if($table === 'product') {
                     $converter = new CallbackValueConverter(function($item) use ($em) {
-                        $val = $em->getReference('MetaCat\Entity\Project', $item);
+                        $val = $item ? $em->getReference('MetaCat\Entity\Project', $item) : NULL;
                         return $val;
                     });
                     $workflow->addValueConverter('project', $converter);
