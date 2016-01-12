@@ -4,7 +4,8 @@ config/whitelist.yml
 /config/db.yml
 /config/aws.json
 /.project
-/var/data/*.sqlite3
+/var/data/*
+!/var/data/.gitkeep
 
 *.*~
 

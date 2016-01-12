@@ -30,25 +30,26 @@ $app -> register(new ValidatorServiceProvider());
 $app -> register(new ServiceControllerServiceProvider());
 $app -> register(new TwigServiceProvider(), [
     'twig.options' => [
-        'strict_variables' => FALSE,
+        'strict_variables' => false,
     ]
 ]);
 $app -> register(new HttpFragmentServiceProvider());
 $app -> register(new DoctrineOrmManagerRegistryProvider());
-$app['twig'] = $app -> extend('twig', function($twig, $app) {
+$app['twig'] = $app -> extend('twig', function ($twig, $app) {
     // add custom globals, filters, tags, ...
 
-    $twig -> addFunction(new \Twig_SimpleFunction('asset', function($asset) use ($app) {
+    $twig -> addFunction(new \Twig_SimpleFunction('asset', function ($asset) use ($app) {
         return $app['request_stack'] -> getMasterRequest() -> getBasepath() . '/' . ltrim($asset, '/');
     }));
 
-    $twig -> addFunction(new \Twig_SimpleFunction('baseUrl', function() use ($app) {
+    $twig -> addFunction(new \Twig_SimpleFunction('baseUrl', function () use ($app) {
         return $app['request_stack'] -> getMasterRequest() -> getSchemeAndHttpHost();
     }));
 
     return $twig;
 });
-$app['twig.loader.filesystem'] = $app->extend('twig.loader.filesystem',
+$app['twig.loader.filesystem'] = $app->extend(
+    'twig.loader.filesystem',
     function (\Twig_Loader_Filesystem $twigLoaderFilesystem) {
         $twigLoaderFilesystem->addPath(__DIR__.'/../templates', 'MetaCat');
 
@@ -61,6 +62,9 @@ $app->register(new AsseticTwigProvider(), array(
 ));
 //set directory for config files
 $app['config.dir'] = __DIR__.'/../config/';
+//last updated
+$app['updated'] = file_exists($update = __DIR__ . '/../var/data/update') ? filemtime($update) : 'unknown';
+
 $app -> register(new YamlConfigServiceProvider($app['config.dir'] . 'config.yml', [
     'basepath' => realpath(__DIR__.'/..')
 ]));

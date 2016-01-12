@@ -73,6 +73,8 @@ class ImportDbalService implements ServiceProviderInterface
 
                 //invalidate cache
                 $em->getConfiguration()->getResultCacheImpl()->delete("mc_{$table}_owner");
+                //touch update
+                touch($app['config.dir'] . '../var/data/update');
             }
 
             return $result;
