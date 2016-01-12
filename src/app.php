@@ -63,7 +63,7 @@ $app->register(new AsseticTwigProvider(), array(
 //set directory for config files
 $app['config.dir'] = __DIR__.'/../config/';
 //last updated
-$app['updated'] = file_exists($update = __DIR__ . '/../var/data/update') ? filemtime($update) : 'unknown';
+$app['updated'] = file_exists($update = __DIR__ . '/../var/data/update') ? filemtime($update) : false;
 
 $app -> register(new YamlConfigServiceProvider($app['config.dir'] . 'config.yml', [
     'basepath' => realpath(__DIR__.'/..')
