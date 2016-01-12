@@ -37,7 +37,7 @@
     "symfony/translation": "~2.6",
     "symfony/twig-bridge": "~2.6",
     "symfony/validator": "~2.6",
-    "dflydev/doctrine-orm-service-provider": "^2.0",
+    "dflydev/doctrine-orm-service-provider": "dev-master",
     "saxulum/saxulum-doctrine-orm-commands": "~1.0.0",
     "saxulum/saxulum-doctrine-orm-manager-registry-provider": "~3.0",
     "boldtrn/jsonb-bundle": "^1.0",
@@ -55,7 +55,9 @@
     "ddeboer/data-import": "@stable",
     "symfony/yaml": "~2.4",
     "deralex/yaml-config-service-provider": "dev-silex2",
-    "aws/aws-php-sns-message-validator": "^1.1"
+    "aws/aws-php-sns-message-validator": "^1.1",
+    "fortawesome/font-awesome": "^4.5",
+    "saxulum/saxulum-pagination-provider": "^2.1"
   },
   "autoload": {
     "psr-0": {

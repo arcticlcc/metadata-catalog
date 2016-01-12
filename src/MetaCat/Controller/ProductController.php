@@ -1,71 +1,65 @@
 <?php
+
 namespace MetaCat\Controller;
 
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Symfony\Component\HttpFoundation\Request;
 
-class ProductController implements ControllerProviderInterface {
-    public function connect(Application $app) {
+class ProductController implements ControllerProviderInterface
+{
+    public function connect(Application $app)
+    {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/view', function(Application $app) {
-
-            $em = $app['orm.em'];
-            $sql = "SELECT p.productid as id,
+        $controllers->get('/view', function (Application $app, Request $request) {
+            $sql = "SELECT * FROM (SELECT p.productid as id,
                 html IS NOT NULL as has_html,
                 xml IS NOT NULL as has_xml,
                 p.json#>>'{metadata,resourceInfo,citation,title}' as title,
                 (SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c WHERE
-                    c->'contactId' = (SELECT value FROM jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS role WHERE
-                    role@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId') ->>'organizationName' as owner
-                FROM product p";
-            $rsm = new ResultSetMappingBuilder($em);
-            $rsm->addRootEntityFromClassMetadata('MetaCat\Entity\Product', 'p');
-            //$rsm->addFieldResult('p', 'id', 'projectid');
-            $rsm->addScalarResult('id', 'id');
-            $rsm->addScalarResult('has_html', 'has_html');
-            $rsm->addScalarResult('has_xml', 'has_xml');
-            $rsm->addScalarResult('title', 'title');
-            $rsm->addScalarResult('owner', 'owner');
-            $query = $em->createNativeQuery($sql, $rsm);
-            $results = $query->getArrayResult();
+                    c->'contactId' = (SELECT value FROM
+                    jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS role
+                    WHERE role@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId') ->>'organizationName' as owner
+                FROM product p) p";
+            $class = 'MetaCat\Entity\Product';
+            $pagination = $app['mc.paginator']($request, $sql, $class);
 
             return $app['twig']->render('metadata.html.twig', array(
                 'title' => 'Products',
                 'active_page' => 'product',
                 'path' => ['product' => ['Products']],
-                'data' => $results
+                'data' => $pagination,
+                'pagination' => $pagination,
+                'owners' => $app['mc.cache.owners']('product'),
             ));
 
         })->bind('product');
 
-        $controllers->get('/{id}/view', function(Application $app, $id) {
+        $controllers->get('/{id}/view', function (Application $app, $id) {
             //TODO: add error handling
             $em = $app['orm.em'];
-                $query = $em->createQuery("SELECT c.productid as id, c.json, c.projectid, p.json as project from MetaCat\Entity\Product c LEFT JOIN c.project p where c.productid = ?1");
+                $query = $em->createQuery("SELECT c.productid as id, c.json, c.projectid, p.json as project
+                    FROM MetaCat\Entity\Product c LEFT JOIN c.project p where c.productid = ?1");
                 $query->setParameter(1, $id);
                 $item = $query->getArrayResult();
 
-            if ($item) {
-                return $app['twig']->render('product_view.html.twig', array(
-                    'title' => "Product: {$item[0]['id']}",
-                    'active_page' => 'product',
-                    'path' => [
-                        'product' => ['Products'],
-                        'view' => ['View'],
-                    ],
-                    'data' => $item[0]
-                ));
-            } else {
+            if (!$item) {
                 $app->abort(404, "No item found with id: $id.");
             }
 
+            return $app['twig']->render('product_view.html.twig', array(
+                'title' => "Product: {$item[0]['id']}",
+                'active_page' => 'product',
+                'path' => [
+                    'product' => ['Products'],
+                    'view' => ['View'],
+                ],
+                'data' => $item[0],
+            ));
 
         })->bind('productview');
 
         return $controllers;
     }
-
 }
-?>

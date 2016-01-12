@@ -12,6 +12,36 @@ class MetadataController implements ControllerProviderInterface {
     public function connect(Application $app) {
         $controllers = $app['controllers_factory'];
 
+        $controllers->get('/{id}/view', function(Application $app, $id) {
+
+            $em = $app['orm.em'];
+
+            try {
+                $query = $em -> createQuery("SELECT 1 from MetaCat\Entity\Project c where c.projectid = ?1");
+                $query -> setParameter(1, $id);
+                $item = $query -> getSingleScalarResult();
+                $subRequest = Request::create($app['url_generator']->generate('projectview', ['id' => $id]), 'GET');
+
+                return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+            } catch (\Doctrine\ORM\NoResultException $e) {
+
+                try {
+                    $query = $em -> createQuery("SELECT 1 from MetaCat\Entity\Product c where c.productid = ?1");
+                    $query -> setParameter(1, $id);
+                    $item = $query -> getSingleScalarResult();
+                    $subRequest = Request::create($app['url_generator']->generate('productview', ['id' => $id]), 'GET');
+
+                    return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+
+                } catch (\Doctrine\ORM\NoResultException $e) {
+
+                    throw new HttpException(404, "No record found for id: $id");
+
+                }
+            }
+        })
+        ->bind('metadatabaseview');
+
         $controllers->get('/{entity}/{id}.{format}', function(Application $app, $entity, $id, $format) {
 
             $em = $app['orm.em'];
@@ -97,7 +127,6 @@ class MetadataController implements ControllerProviderInterface {
 
             } else {
                 throw new HttpException(403, 'Entity name not allowed. Valid entities are: ' . join('|', array_keys($white)));
-
             }
 
             try {
@@ -121,6 +150,5 @@ class MetadataController implements ControllerProviderInterface {
 
         return $controllers;
     }
-
 }
 ?>

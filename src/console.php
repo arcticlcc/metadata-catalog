@@ -3,7 +3,6 @@
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Saxulum\DoctrineOrmCommands\Command\CreateDatabaseDoctrineCommand;
 use Saxulum\DoctrineOrmCommands\Command\DropDatabaseDoctrineCommand;
@@ -27,7 +26,9 @@ $app['console'] = $app->extend('console', function (ConsoleApplication $consoleA
     $consoleApplication->setAutoExit(false);
     $consoleApplication->setName('Metadata Catalog Console');
     $consoleApplication->setVersion('n/a');
-    $consoleApplication->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
+    $consoleApplication->getDefinition()->addOption(
+        new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev')
+    );
     $helperSet = $consoleApplication->getHelperSet();
     $helperSet->set(new ManagerRegistryHelper($app['doctrine']), 'doctrine');
 
@@ -35,23 +36,23 @@ $app['console'] = $app->extend('console', function (ConsoleApplication $consoleA
 });
 
 $app['console.commands'] = $app->extend('console.commands', function ($commands) use ($app) {
-    $commands[] = new CreateDatabaseDoctrineCommand;
-    $commands[] = new DropDatabaseDoctrineCommand;
-    $commands[] = new CreateSchemaDoctrineCommand;
-    $commands[] = new UpdateSchemaDoctrineCommand;
-    $commands[] = new DropSchemaDoctrineCommand;
-    $commands[] = new RunDqlDoctrineCommand;
-    $commands[] = new RunSqlDoctrineCommand;
-    $commands[] = new ConvertMappingDoctrineCommand;
-    $commands[] = new ClearMetadataCacheDoctrineCommand;
-    $commands[] = new ClearQueryCacheDoctrineCommand;
-    $commands[] = new ClearResultCacheDoctrineCommand;
-    $commands[] = new InfoDoctrineCommand;
-    $commands[] = new ValidateSchemaCommand;
-    $commands[] = new EnsureProductionSettingsDoctrineCommand;
-    $commands[] = new AsseticDumpCommand;
+    $commands[] = new CreateDatabaseDoctrineCommand();
+    $commands[] = new DropDatabaseDoctrineCommand();
+    $commands[] = new CreateSchemaDoctrineCommand();
+    $commands[] = new UpdateSchemaDoctrineCommand();
+    $commands[] = new DropSchemaDoctrineCommand();
+    $commands[] = new RunDqlDoctrineCommand();
+    $commands[] = new RunSqlDoctrineCommand();
+    $commands[] = new ConvertMappingDoctrineCommand();
+    $commands[] = new ClearMetadataCacheDoctrineCommand();
+    $commands[] = new ClearQueryCacheDoctrineCommand();
+    $commands[] = new ClearResultCacheDoctrineCommand();
+    $commands[] = new InfoDoctrineCommand();
+    $commands[] = new ValidateSchemaCommand();
+    $commands[] = new EnsureProductionSettingsDoctrineCommand();
+    $commands[] = new AsseticDumpCommand();
 
-    $command = new MetadataImportDbal;
+    $command = new MetadataImportDbal();
     $command->setContainer($app);
     $commands[] = $command;
 

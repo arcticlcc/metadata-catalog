@@ -1,0 +1,11 @@
+<div class="form-inline mc-filter">
+  <div class="form-group mc-filter-owner">
+    <span>Owner</span>
+    <select class="form-control input-sm" data-param="owner">
+      <option value="">Show All</option>
+      {% for item in owners %}
+      <option {{ (pagination.customParameters.owner == item.owner) ? 'selected=""' }}>{{ item.owner }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>

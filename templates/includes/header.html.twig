@@ -15,10 +15,21 @@
             <ul class="nav navbar-nav">
                 {% for item in app.config.nav %}
                 <li {% if item.path == active_page %} class="active"{% endif%}>
-                    <a href="{{ path(item.path) }}"> <span class="glyphicon glyphicon-{{item.icon}}" aria-hidden="true"></span> {{item.title}} </a>
+                    <a href="{{ item.path starts with 'http' ? item.path : path(item.path) }}">
+                        <span class="fa fa-{{item.icon}}" aria-hidden="true"></span> {{item.title}}
+                    </a>
                 </li>
                 {% endfor %}
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% for item in app.config.right %}
+                <li {% if item.pull is defined %}{% endif%}>
+                    <a href="{{ item.path starts with 'http' ? item.path : path(item.path) }}">
+                        <span class="fa fa-{{item.icon}}" aria-hidden="true"></span> {{item.title}}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>            
         </div>
     </div>
 </nav>

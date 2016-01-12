@@ -12,3 +12,8 @@ nav:
     icon: file
     path: product
     title: Products
+right:
+  -
+    icon: github
+    path: https://github.com/arcticlcc/metadata-catalog
+    title: GitHub

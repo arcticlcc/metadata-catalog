@@ -1,12 +1,44 @@
 {% extends "layout.html.twig" %}
 
-{% block title %} {{ title }} {% endblock %}
+{% block title %}
+{{ title }}
+{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <h2> {{ title }} </h2>
-            {% include 'includes/list.html.twig' %}
+{%if pagination.customParameters.error %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <strong>Warning!</strong>
+  {{ pagination.customParameters.error }}
+</div>
+{% endif %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="mc-list-header row">
+      <div class="col-sm-12 col-md-2">
+        <h2>
+          {{ title }}
+        </h2>
+      </div>
+      <div class="col-sm-6">
+        <h2>
+          <div class="">
+            <small>{% include 'includes/filter.html.twig' %}</small>
+          </div>
+        </h2>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <h2 class="">
+          <div class="">
+            <small>{% include 'includes/itemcount.html.twig' %}</small>
+          </div>
         </div>
+      </h2>
     </div>
+    {% include 'includes/list.html.twig' %}
+    <div class="text-center">{{ knp_pagination_render(pagination) }}</div>
+  </div>
+</div>
 {% endblock %}

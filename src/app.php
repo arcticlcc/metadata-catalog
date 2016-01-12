@@ -9,8 +9,15 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider;
 use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Saxulum\AsseticTwig\Provider\AsseticTwigProvider;
+use Saxulum\PaginationProvider\Provider\SaxulumPaginationProvider;
 use DerAlex\Pimple\YamlConfigServiceProvider;
 use Aws\Sdk;
+use MetaCat\Service\PaginationService;
+use MetaCat\Service\LoadCacheService;
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\ChainCache;
+
 //use Boldtrn\JsonbBundle\Types\JsonbArrayType;
 //use Doctrine\Common\Annotations\AnnotationRegistry;
 
@@ -61,6 +68,24 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => $app['config']['dbs']
 ));
 
+$app['orm.cache.factory.chain'] = $app->protect(function ($cacheOptions) {
+    if (empty($cacheOptions['path'])) {
+        throw new \RuntimeException('FilesystemCache path not defined');
+    }
+
+    $cacheOptions += array(
+        'extension' => FilesystemCache::EXTENSION,
+        'umask' => 0002,
+    );
+    $array = new ArrayCache();
+    $file = new FilesystemCache($cacheOptions['path'], $cacheOptions['extension'], $cacheOptions['umask']);
+    $chainCache = new ChainCache([
+        $array,
+        $file,
+    ]);
+    return $chainCache;
+});
+
 $app->register(new DoctrineOrmServiceProvider, array(
     'orm.ems.options' => array(
        'psql' => array(
@@ -88,13 +113,45 @@ $app->register(new DoctrineOrmServiceProvider, array(
         'JSONB_EX' => 'Boldtrn\JsonbBundle\Query\JsonbExistence',
     ),
     'orm.proxies_dir' => __DIR__.'/../var/cache/doctrine/proxies',
+    'orm.default_cache' => [
+      'driver' => 'chain',
+      'path' => __DIR__.'/../var/cache/doctrine/orm'
+    ]
 ));
-$app['orm.em']->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb','jsonb');
+$app['orm.em']->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'jsonb');
 
 $app->register(new MetaCat\Service\ImportDbalService, array());
 
-$app['aws'] = new Aws\Sdk(
-    $app['config']['aws']
-);
+$app['aws'] = function ($app) {
+    return new Aws\Sdk(
+        $app['config']['aws']
+    );
+};
+
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'locale' => 'en-US',
+    'locale_fallbacks' => array('en-US', 'en'),
+));
+$app->register(new SaxulumPaginationProvider, array(
+    'knp_paginator.options' => array(
+        'defaultPaginationOptions' => array(
+            'pageParameterName' => 'page',
+            'sortFieldParameterName' => 'sort',
+            'sortDirectionParameterName' => 'direction',
+            'filterFieldParameterName' => 'filterField',
+            'filterValueParameterName' => 'filterValue',
+            'distinct' => true,
+        ),
+        'subscriberOptions' => array(
+            'defaultPaginationTemplate' => '@SaxulumPaginationProvider/twitter_bootstrap_v3_pagination.html.twig',
+            'defaultSortableTemplate' => '@SaxulumPaginationProvider/sortable_link.html.twig',
+            'defaultFiltrationTemplate' => '@SaxulumPaginationProvider/filtration.html.twig',
+            'defaultPageRange' => 5,
+        )
+    )
+));
+
+$app->register(new MetaCat\Service\PaginationService, array());
+$app->register(new MetaCat\Service\LoadCacheService, array());
 
 return $app;

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "791ddd17fe2be894d70e8e1a134394ba",
-    "content-hash": "9b9498b87aa3eeb8887b3a05a9ed57d5",
+    "hash": "0931dea8b88c4c8cabe9f90f1556544e",
+    "content-hash": "649b81ae682072c132ae36838f9f10fb",
     "packages": [
         {
             "name": "aws/aws-php-sns-message-validator",
@@ -312,16 +312,16 @@
         },
         {
             "name": "dflydev/doctrine-orm-service-provider",
-            "version": "v2.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dflydev/dflydev-doctrine-orm-service-provider.git",
-                "reference": "84b3f4887a999cbd017010f758122d8409cccac0"
+                "reference": "f1beb45fffb576a6ea46c26e55d41cc777ab0e03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-doctrine-orm-service-provider/zipball/84b3f4887a999cbd017010f758122d8409cccac0",
-                "reference": "84b3f4887a999cbd017010f758122d8409cccac0",
+                "url": "https://api.github.com/repos/dflydev/dflydev-doctrine-orm-service-provider/zipball/f1beb45fffb576a6ea46c26e55d41cc777ab0e03",
+                "reference": "f1beb45fffb576a6ea46c26e55d41cc777ab0e03",
                 "shasum": ""
             },
             "require": {
@@ -365,7 +365,7 @@
                 "pimple",
                 "silex"
             ],
-            "time": "2015-09-07 12:14:46"
+            "time": "2016-01-01 20:40:07"
         },
         {
             "name": "doctrine/annotations",
@@ -968,6 +968,54 @@
             "time": "2015-12-25 15:50:05"
         },
         {
+            "name": "fortawesome/font-awesome",
+            "version": "v4.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "fddd2c240452e6c8990c4ef75e0265b455aa7968"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/fddd2c240452e6c8990c4ef75e0265b455aa7968",
+                "reference": "fddd2c240452e6c8990c4ef75e0265b455aa7968",
+                "shasum": ""
+            },
+            "require-dev": {
+                "jekyll": "1.0.2",
+                "lessc": "1.4.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OFL-1.1",
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dave Gandy",
+                    "email": "dave@fontawesome.io",
+                    "homepage": "http://twitter.com/davegandy",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The iconic font and CSS framework",
+            "homepage": "http://fontawesome.io/",
+            "keywords": [
+                "FontAwesome",
+                "awesome",
+                "bootstrap",
+                "font",
+                "icon"
+            ],
+            "time": "2015-11-30 17:28:02"
+        },
+        {
             "name": "guzzlehttp/guzzle",
             "version": "6.1.1",
             "source": {
@@ -1233,6 +1281,74 @@
                 "shasum": null
             },
             "type": "library"
+        },
+        {
+            "name": "knplabs/knp-components",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/knp-components.git",
+                "reference": "4503275e4f1a0e9667aa65b0ebed842ef2d8d8ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/4503275e4f1a0e9667aa65b0ebed842ef2d8d8ba",
+                "reference": "4503275e4f1a0e9667aa65b0ebed842ef2d8d8ba",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "doctrine/mongodb-odm": "~1.0@beta",
+                "doctrine/orm": "~2.4",
+                "phpunit/phpunit": "~4.2",
+                "ruflin/elastica": "~1.0",
+                "symfony/event-dispatcher": "~2.5"
+            },
+            "suggest": {
+                "doctrine/common": "to allow usage pagination with Doctrine ArrayCollection",
+                "doctrine/mongodb-odm": "to allow usage pagination with Doctrine ODM MongoDB",
+                "doctrine/orm": "to allow usage pagination with Doctrine ORM",
+                "propel/propel1": "to allow usage pagination with Propel ORM",
+                "ruflin/Elastica": "to allow usage pagination with ElasticSearch Client",
+                "solarium/solarium": "to allow usage pagination with Solarium Client"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Component": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://github.com/KnpLabs/knp-components/contributors"
+                }
+            ],
+            "description": "Knplabs component library",
+            "homepage": "http://github.com/KnpLabs/knp-components",
+            "keywords": [
+                "components",
+                "knp",
+                "knplabs",
+                "pager",
+                "paginator"
+            ],
+            "time": "2015-09-01 10:54:53"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -2170,6 +2286,64 @@
             "time": "2015-12-01 11:56:20"
         },
         {
+            "name": "saxulum/saxulum-pagination-provider",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saxulum/saxulum-pagination-provider.git",
+                "reference": "1bc593c815c19f8a25f3e78e9ce7e23ca14c5f1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/saxulum/saxulum-pagination-provider/zipball/1bc593c815c19f8a25f3e78e9ce7e23ca14c5f1e",
+                "reference": "1bc593c815c19f8a25f3e78e9ce7e23ca14c5f1e",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-components": "~1.2,>=1.2.5",
+                "php": ">=5.5.9,<8.0",
+                "pimple/pimple": ">=2.1,<4",
+                "symfony/http-kernel": "~2.3|~3.0",
+                "symfony/translation": "~2.3|~3.0",
+                "twig/twig": "~1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "silex/api": "~2.0@dev",
+                "silex/providers": "~2.0@dev",
+                "symfony/routing": "~2.3|~3.0"
+            },
+            "suggest": {
+                "silex/silex": "~1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Saxulum\\PaginationProvider\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dominik Zogg",
+                    "email": "dominik.zogg@gmail.com"
+                }
+            ],
+            "description": "Saxulum Pagination Provider",
+            "keywords": [
+                "cilex",
+                "knplabs",
+                "pagination",
+                "pimple",
+                "saxulum",
+                "silex"
+            ],
+            "time": "2015-12-19 18:01:42"
+        },
+        {
             "name": "silex/silex",
             "version": "dev-master",
             "source": {
@@ -2263,7 +2437,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex-WebProfiler/zipball/951b113e1a364e8cb46097f4fd81d03073bf968c",
+                "url": "https://api.github.com/repos/silexphp/Silex-WebProfiler/zipball/ca6dee2229d62abfb081512737b9c72dedf9f953",
                 "reference": "951b113e1a364e8cb46097f4fd81d03073bf968c",
                 "shasum": ""
             },
@@ -4579,6 +4753,7 @@
     "stability-flags": {
         "silex/silex": 20,
         "silex/web-profiler": 20,
+        "dflydev/doctrine-orm-service-provider": 20,
         "saxulum/saxulum-bootstrap-provider": 20,
         "jeromemacias/silex-debug": 20,
         "ddeboer/data-import": 0,

@@ -24,7 +24,7 @@ $app = require __DIR__.'/../src/app.php';
 require __DIR__.'/../config/dev.php';
 
 //prevent match conflicts with wildcard routes and profiler
-if (!preg_match('/^(\/index_dev.php)?\/_profiler.*/', $_SERVER["REQUEST_URI"])) {
+if (!preg_match('/^(\/index_dev.php)?\/_profiler.*/', $_SERVER['REQUEST_URI'])) {
     require __DIR__.'/../src/controllers.php';
 }
 

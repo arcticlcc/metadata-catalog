@@ -2,9 +2,6 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 $app->mount('/sync', new MetaCat\Controller\SyncController());
@@ -16,7 +13,7 @@ $app->mount('/', new MetaCat\Controller\RedirectController());
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig', array(
         'title' => 'Home',
-        'index_dev' => is_readable(realpath($app['config.dir'].'../web/index_dev.php'))
+        'index_dev' => is_readable(realpath($app['config.dir'].'../web/index_dev.php')),
     ));
 })
 ->bind('homepage');
@@ -58,13 +55,13 @@ $app->before(function (Request $request) use ($app) {
     $white = $app['config']['white'];
     $format = $request->get('format');
 
-    if($format && !isset($white['format'][$format])) {
+    if ($format && !isset($white['format'][$format])) {
         return new Response($app['twig']->render('errors/404.html.twig', array('code' => 404)), 404);
     }
 
     $e = $request->get('entity');
 
-    if($e && !isset($white['entity'][$e])) {
+    if ($e && !isset($white['entity'][$e])) {
         return new Response($app['twig']->render('errors/404.html.twig', array('code' => 404)), 404);
     }
 });

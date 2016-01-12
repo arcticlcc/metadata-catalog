@@ -8,8 +8,8 @@
         {% if index_dev %}
         <div class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-            Warning: For security on production systems, <strong>web/indev_dev.php</strong> 
-            should not be readable by the web server, or simply (re)moved from
+            Warning: For security on production systems, <strong>web/indev_dev.php</strong>
+            should not be readable by the web server. Alternatively, simply (re)move from
             the web root.
         </div>
         {% endif %}
@@ -19,13 +19,17 @@
         <p>
             The Metadata Catalog provides access to project and product(dataset)
             metadata. While the metadata is provided in multple formats, the
-            catalog utilizes the <a href="http://www.adiwg.org/projects/#mdjson-schemas">mdJSON</a> format as a datastore. mdJSON records
+            catalog utilizes the <a class="external" href="http://www.adiwg.org/projects/#mdjson-schemas">mdJSON</a> format as a datastore. mdJSON records
             are parsed to provide information about projects and products. HTML
-            and XML metadata was produced using the <a href="http://www.adiwg.org/mdTranslator/about/">ADIwg mdTranslator</a>.
+            and XML metadata was produced using the
+            <a class="external" class="external"  class="external" class="external"href="http://www.adiwg.org/mdTranslator/about/">ADIwg mdTranslator</a>.
+            The <a class="external" href="http://mdtools.adiwg.org">mdTools</a> application provides
+            an interface for exploring mdJSON and related tools.
         </p>
-        <h2>API</h2>
+        <h2><abbr title="Application programming interface">API</abbr></h2>
         <p>
-            The Catalog application is backed by a simple RESTful API. Currently, the
+            The Catalog application is backed by a simple RESTful
+            <abbr title="Application programming interface">API</abbr>. Currently, the
             API is read-only(only GET requests are supported).
         </p>
         <p>
@@ -81,7 +85,7 @@
                             <i>entity</i> = [project | product]
                         </li>
                         <li>
-                            <i>uuid</i> = a valid UUID
+                            <i>uuid</i> = a valid <abbr title="Universally unique identifier">UUID</abbr>
                         </li>
                         <li>
                             <i>format</i> = [<strong>json</strong> | xml | html]
@@ -98,7 +102,7 @@
                             <i>entity</i> = [project | product]
                         </li>
                         <li>
-                            <i>uuid</i> = a valid UUID
+                            <i>uuid</i> = a valid <abbr title="Universally unique identifier">UUID</abbr>
                         </li>
                         <li>
                             Note: a request to <i>.../{entity}/{uuid}/</i> will redirect to
@@ -116,7 +120,7 @@
                             <i>entity1</i> = [project | product]
                         </li>
                         <li>
-                            <i>id</i> = a valid UUID for entity1
+                            <i>id</i> = a valid <abbr title="Universally unique identifier">UUID</abbr> for entity1
                         </li>
                         <li>
                             <i>entity2</i> = [project | product]
@@ -138,10 +142,21 @@
                     in the desired format
                     <ul>
                         <li>
-                            <i>uuid</i> = a valid UUID
+                            <i>uuid</i> = a valid <abbr title="Universally unique identifier">UUID</abbr>
                         </li>
                         <li>
                             <i>format</i> = [<strong>json</strong> | xml | html]
+                        </li>
+                    </ul>
+                </dd>
+                <dt>
+                    .../{uuid}/[view]
+                </dt>
+                <dd>
+                    Returns the entity homepage corresponding to the supplied uuid
+                    <ul>
+                        <li>
+                            <i>uuid</i> = a valid <abbr title="Universally unique identifier">UUID</abbr>
                         </li>
                     </ul>
                 </dd>

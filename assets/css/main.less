@@ -1,48 +1,44 @@
 @import (reference) "../../vendor/twbs/bootstrap/less/variables";
+@import "external_link";
 
 /***Main***/
 body {
   padding-top: 60px;
 }
-
-p.pre, span.pre {
+p.pre,
+span.pre {
   white-space: pre-wrap;
 }
 
 /***Panels***/
 .panel-heading.collapsible {
-
   span:after {
-    font-family:'Glyphicons Halflings';
-    content:"\e113";
+    font-family: 'FontAwesome';
+    content: "\f077";
     float: right;
     color: @brand-primary;
   }
-
   &.collapsed span:after {
-    content:"\e114";
+    content: "\f078";
   }
-
   &:hover {
     cursor: pointer;
-
     span:after {
       color: @link-hover-color;
     }
   }
 }
+
 //fix table rendering
 td {
-    max-width: 200px;
+  max-width: 200px;
 }
 
 //fix dt column widths
 #api-definitions .dl-horizontal {
-
   dd {
-      margin-bottom: 10px;
+    margin-bottom: 10px;
   }
-
   @media (min-width: @grid-float-breakpoint) {
     dt {
       width: (@dl-horizontal-offset + 145);
@@ -52,14 +48,51 @@ td {
     }
   }
 }
-
 #collapse-map {
-
   .tab-map {
     height: 400px;
   }
-
   .nav {
     padding-left: 15px;
+  }
+}
+
+//list header
+.mc-list-header {
+  small {
+    font-size: 50%;
+  }
+}
+.mc-item-count,
+.mc-filter {
+  .fa-circle {
+    font-size: 7px;
+    vertical-align: middle;
+    padding: 0 4px;
+    color: @brand-info;
+  }
+  select.input-sm {
+    font-size: 85%;
+  }
+}
+@media (min-width: @screen-md-min) {
+  .mc-item-count,
+  .mc-filter {
+    text-align: right;
+  }
+}
+
+//sortable
+table th {
+  a:after {
+    font-family: 'FontAwesome';
+    float: right;
+    color: @brand-primary;
+  }
+  a.desc:after {
+    content: "\f078";
+  }
+  a.asc:after {
+    content: "\f077";
   }
 }

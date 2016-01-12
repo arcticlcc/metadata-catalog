@@ -1,0 +1,20 @@
+{% set sizes = [ 10, 20, 50, 100, 1000] %}
+{% set total = pagination.getTotalItemCount %}
+{% set item_end = min(total, pagination.getCurrentPageNumber * pagination.getItemNumberPerPage) %}
+{% set item_start = max(
+    1,
+    item_end - pagination.getItemNumberPerPage + 1,
+    (pagination.getCurrentPageNumber - 1) * pagination.getItemNumberPerPage + 1)
+%}
+<div class="form-inline mc-item-count">
+  <div class="form-group mc-page-size">
+    <span># per Page</span>
+    <select class="form-control input-sm"  data-param="size">
+      {% for size in sizes %}
+      <option {{ (pagination.getItemNumberPerPage == size) ? 'selected=""' }}>{{ size }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <span class="fa fa-circle hidden-xs"></span>
+  <span class="mc-counter"> Showing {{ item_start }} - {{ item_end }} of {{ total }}<span>
+</div>
