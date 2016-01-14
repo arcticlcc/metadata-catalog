@@ -6,6 +6,7 @@ config/whitelist.yml
 /.project
 /var/data/*
 !/var/data/.gitkeep
+!/var/data/example.sqlite3
 
 *.*~
 
