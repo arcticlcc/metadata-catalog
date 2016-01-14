@@ -21,6 +21,8 @@
   ],
   "require": {
     "php": ">=5.5.9",
+    "ext-pdo": "*",
+    "ext-pdo_sqlite": "*",
     "silex/silex": "~2.0@dev",
     "silex/web-profiler": "~2.0@dev",
     "symfony/browser-kit": "~2.6",
@@ -57,7 +59,8 @@
     "deralex/yaml-config-service-provider": "dev-silex2",
     "aws/aws-php-sns-message-validator": "^1.1",
     "fortawesome/font-awesome": "^4.5",
-    "saxulum/saxulum-pagination-provider": "^2.1"
+    "saxulum/saxulum-pagination-provider": "^2.1",
+    "symfony/http-kernel": "^2.8"
   },
   "autoload": {
     "psr-0": {

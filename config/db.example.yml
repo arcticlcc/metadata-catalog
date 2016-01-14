@@ -10,5 +10,5 @@ dbs:
      charset: utf8
   import:
      driver: pdo_sqlite
-     path: %basepath%/var/data/metadata.sqlite3
+     path: %basepath%/var/data/example.sqlite3
      charset: utf8
