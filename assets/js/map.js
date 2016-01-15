@@ -48,8 +48,24 @@ $(function() {
         }
       };
 
-      var bboxToPoly = function(json, box) {
-        var bbox = box ? box : json.bbox;
+      var bboxToPoly = function(geoJson, box) {
+        var bbox = box ? box : geoJson.bbox;
+        var json = geoJson ? geoJson : {
+          "id": "boundingExtent",
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+            }
+          },
+          "bbox": bbox,
+          "type": "Feature",
+          "geometry": null,
+          "properties": {
+            "description": "bounding box"
+          }
+        };
+
         json.geometry = {
           "type": "Polygon",
           "coordinates": [
@@ -73,70 +89,105 @@ $(function() {
         return json;
       };
 
+      var bboxToLayer = function(bbox) {
+        //create 360 degree bbox
+        if (bbox) {
+          var data = bboxToPoly(null, bbox);
 
-      var bboxLayers = [];
-      var bboxCalc = [];
+          var layer = L.geoJson(data, {
+            style: function(feature) {
+              return feature.properties.style || {};
+            },
+            onEachFeature: onEachFeature
+          });
+
+          return layer;
+        }
+      };
+
+      var coordsToLatLng = function(coords) {
+        var longitude = coords[0];
+        var latitude = coords[1];
+        var latlng = L.latLng(latitude, longitude);
+
+        if (longitude < 0) {
+          return latlng.wrap(360, 0);
+        } else
+          return latlng;
+      };
+
+      var compareBounds = function(bnds, toCompare) {
+        var n = bnds[3];
+        var s = bnds[1];
+        var e = bnds[2];
+        var w = bnds[0];
+        var calc = toCompare ? toCompare : [];
+
+        //calculate bounds
+        calc[0] = calc[0] ? Math.min(calc[0], w, e) : Math.min(w, e);
+        calc[1] = calc[1] ? Math.min(calc[1], n, s) : Math.min(n, s);
+        calc[2] = calc[2] ? Math.max(calc[2], w, e) : Math.max(w, e);
+        calc[3] = calc[3] ? Math.max(calc[3], n, s) : Math.max(n, s);
+
+        return calc;
+      };
+
+
+      var bboxMaps = [];
+      var bboxCalcAll;
 
       extents.forEach(function(extent, idx) {
         var map = L.map('geo-' + idx);
         var geoArray = extent.geographicElement;
         var geojson = [];
         var geoLayer;
+        var bboxCalc;
+        var overlays = {};
 
+        map.addLayer(new L.TileLayer.OSM());
 
         geoArray.forEach(function(json, geoIdx, geoArr) {
-          var bbox = json.bbox;
+          var bbox = json.geometry === null && json.type === "Feature" ? json.bbox : false;
 
           //bbox doesn't cross the dateline
-          if (!json.geometry && bbox && bbox[0] < 0 && bbox[2] < 0) {
+          if (bbox && ((bbox[0] <= 0 && bbox[2] <= 0) || (bbox && bbox[0] > 0 && bbox[2] > 0))) {
+            json.properties.isBox = true;
             bboxToPoly(json);
           }
 
-          if (json.geometry || json.features) {
+          //add valid object to layer data
+          if (json.geometry || json.features || json.coordinates || json.geometries) {
             geojson.push(json);
             return;
           }
         });
+
+        //create fature layer
         geoLayer = L.geoJson(geojson, {
           style: function(feature) {
             return feature.properties.style || {};
           },
-          coordsToLatLng: function(coords) {
-            var longitude = coords[0];
-            var latitude = coords[1];
-            var latlng = L.latLng(latitude, longitude);
-
-            if (longitude < 0) {
-              return latlng.wrap(360, 0);
-            } else
-              return latlng;
-          },
+          coordsToLatLng: coordsToLatLng,
           onEachFeature: onEachFeature
         });
 
         geoLayer.addTo(map);
 
-        if (geojson.length) {
-          var bnds = geoLayer.getBounds();
-          var n = bnds.getNorth();
-          var s = bnds.getSouth();
-          var e = bnds.getEast();
-          var w = bnds.getWest();
-
-          //calculate bounds
-          bboxCalc[0] = bboxCalc[0] ? Math.min(bboxCalc[0], w, e) : Math.min(w, e);
-          bboxCalc[1] = bboxCalc[1] ? Math.min(bboxCalc[1], n, s) : Math.min(n, s);
-          bboxCalc[2] = bboxCalc[2] ? Math.max(bboxCalc[2], w, e) : Math.max(w, e);
-          bboxCalc[3] = bboxCalc[3] ? Math.max(bboxCalc[3], n, s) : Math.max(n, s);
-
-          //geoLayer.addTo(map);
-          map.fitBounds(bnds);
-        } else {
+        if (geojson.length === 0) {
           //bbox map crosses dateline
-          geoLayer.options._map = map;
-          bboxLayers.push(geoLayer);
-        }
+          bboxMaps.push([map, geoLayer]);
+        } else {
+          var bnds = geoLayer.getBounds();
 
+          if (!(geojson.length === 1 && geojson[0].properties && geojson[0].properties.isBox)) {
+            //actual features, calculate bounds
+            bboxCalc = compareBounds(bnds.toBBoxString().split(','));
+            overlays.Features = geoLayer;
+          }
+
+          map.fitBounds(bnds);
+        }
+        //re-calculate bounds on tab toggle
         $('#collapse-map a[data-toggle="pill"]').on('show.bs.tab', $.proxy(function() {
           var me = this;
           var i = 0;
@@ -147,35 +198,24 @@ $(function() {
 
         }, map));
 
-        map.addLayer(new L.TileLayer.OSM());
+        //calculate bounds for all features in this extent
+        if (bboxCalc) {
+          overlays.BBOX = bboxToLayer(bboxCalc);
+          L.control.layers(null, overlays).addTo(map);
+        }
+
+        //update bboxCalcAll
+        bboxCalcAll = bboxCalcAll ? compareBounds(bboxCalc, bboxCalcAll) : bboxCalc;
       });
-      //create 360 degree bbox
-      //will combine multiple bboxes into single polygon
-      //covers all features
-      if (bboxLayers.length) {
-        var jsonData = {
-          "id": "boundingExtent",
-          "crs": {
-            "type": "name",
-            "properties": {
-              "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
-            }
-          },
-          "bbox": bboxCalc,
-          "type": "Feature",
-          "geometry": null,
-          "properties": {
-            "description": "bounding box"
-          }
-        };
 
-        bboxLayers.forEach(function(layer) {
-          var map = layer.options._map;
-
-          bboxToPoly(jsonData);
-          layer.addData(jsonData);
-          layer.addTo(map);
-          map.fitBounds(layer.getBounds());
+      //generate overall bbox map layers for ALL features
+      if (bboxMaps.length) {
+        bboxMaps.forEach(function(map) {
+          map[1].addData(bboxToPoly(null, bboxCalcAll));
+          map[0].addLayer(map[1]);
+          map[0].fitBounds(map[1].getBounds());
+          $('#collapse-map a[data-toggle="pill"][href="#' + map[0].getContainer().id + '"]')
+            .text('bounding box for ALL features');
         });
       }
     })();
