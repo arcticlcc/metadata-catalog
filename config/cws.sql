@@ -31,7 +31,7 @@ CREATE MATERIALIZED VIEW records AS
     regexp_replace(XMLPARSE(DOCUMENT prod.xml STRIP WHITESPACE)::text, 'encoding="UTF-8"'::text, ''::text) AS xml,
     regexp_replace(regexp_replace(prod.xml, '<[^<]+>'::text, ''::text, 'g'::text), '(\r|\n|\s|\t)+'::text, ' '::text, 'g'::text) AS anytext,
     b.bbox AS wkt_geometry,
-    b.the_geom,
+    --b.the_geom,
     prod.json #>> '{metadata,resourceInfo,citation,title}'::text[] AS title,
     k.keywords,
     ln.links,
@@ -98,8 +98,8 @@ CREATE MATERIALIZED VIEW records AS
           WHERE (roles.crole = ANY (ARRAY['contributor'::text, 'principalInvestigator'::text, 'author'::text, 'coauthor'::text, 'collaborator'::text, 'editor'::text, 'coPrincipalInvestigator'::text])) AND roles.productid = prod.productid) AS contributor,
     NULL::text AS relation
    FROM product prod,
-    LATERAL ( SELECT st_astext(st_convexhull(st_collect(g.geom))) AS bbox,
-            st_convexhull(st_collect(g.geom)) AS the_geom
+    LATERAL ( SELECT st_astext(st_convexhull(st_collect(g.geom))) AS bbox--,
+            --st_convexhull(st_collect(g.geom)) AS the_geom
            FROM ( SELECT
                         CASE
                             WHEN ge.geo ? 'geometry'::text THEN st_geomfromgeojson(ge.geo ->> 'geometry'::text)
