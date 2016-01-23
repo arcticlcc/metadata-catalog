@@ -1,4 +1,5 @@
 -- Materialized View: records
+
 CREATE MATERIALIZED VIEW records AS
  WITH rdate AS (
          SELECT product.productid,
@@ -27,10 +28,10 @@ CREATE MATERIALIZED VIEW records AS
     'gmd:MD_Metadata'::text AS typename,
     'http://www.isotc211.org/2005/gmd'::text AS schema,
     COALESCE(prod.json #>> '{metadata,metadataInfo,metadataLastUpdate}'::text[], now()::text) AS insert_date,
-    regexp_replace(XMLPARSE(DOCUMENT prod.xml STRIP WHITESPACE)::text,'encoding="UTF-8"','') AS xml,
+    regexp_replace(XMLPARSE(DOCUMENT prod.xml STRIP WHITESPACE)::text, 'encoding="UTF-8"'::text, ''::text) AS xml,
     regexp_replace(regexp_replace(prod.xml, '<[^<]+>'::text, ''::text, 'g'::text), '(\r|\n|\s|\t)+'::text, ' '::text, 'g'::text) AS anytext,
     b.bbox AS wkt_geometry,
-    the_geom,
+    b.the_geom,
     prod.json #>> '{metadata,resourceInfo,citation,title}'::text[] AS title,
     k.keywords,
     ln.links,
@@ -45,16 +46,16 @@ CREATE MATERIALIZED VIEW records AS
     prod.json #>> '{metadata,resourceInfo,citation,alternateTitle}'::text[] AS title_alternate,
     ( SELECT rdate.json ->> 'date'::text
            FROM rdate
-          WHERE rdate.json @> '{"dateType": "lastUpdate"}'::jsonb) AS date_modified,
+          WHERE rdate.json @> '{"dateType": "lastUpdate"}'::jsonb AND rdate.productid = prod.productid) AS date_modified,
     ( SELECT rdate.json ->> 'date'::text
            FROM rdate
-          WHERE rdate.json @> '{"dateType": "revision"}'::jsonb) AS date_revision,
+          WHERE rdate.json @> '{"dateType": "revision"}'::jsonb AND rdate.productid = prod.productid) AS date_revision,
     ( SELECT rdate.json ->> 'date'::text
            FROM rdate
-          WHERE rdate.json @> '{"dateType": "creation"}'::jsonb) AS date_creation,
+          WHERE rdate.json @> '{"dateType": "creation"}'::jsonb AND rdate.productid = prod.productid) AS date_creation,
     ( SELECT rdate.json ->> 'date'::text
            FROM rdate
-          WHERE rdate.json @> '{"dateType": "publication"}'::jsonb) AS date_publication,
+          WHERE rdate.json @> '{"dateType": "publication"}'::jsonb AND rdate.productid = prod.productid) AS date_publication,
     ( SELECT roles.org
            FROM roles
           WHERE roles.contactid = (prod.json #>> '{metadata,resourceInfo,pointOfContact,0,contactId}'::text[]) AND roles.productid = prod.productid
@@ -97,7 +98,8 @@ CREATE MATERIALIZED VIEW records AS
           WHERE (roles.crole = ANY (ARRAY['contributor'::text, 'principalInvestigator'::text, 'author'::text, 'coauthor'::text, 'collaborator'::text, 'editor'::text, 'coPrincipalInvestigator'::text])) AND roles.productid = prod.productid) AS contributor,
     NULL::text AS relation
    FROM product prod,
-    LATERAL ( SELECT st_astext(st_convexhull(st_collect(g.geom))) AS bbox, st_convexhull(st_collect(g.geom)) as the_geom
+    LATERAL ( SELECT st_astext(st_convexhull(st_collect(g.geom))) AS bbox,
+            st_convexhull(st_collect(g.geom)) AS the_geom
            FROM ( SELECT
                         CASE
                             WHEN ge.geo ? 'geometry'::text THEN st_geomfromgeojson(ge.geo ->> 'geometry'::text)
