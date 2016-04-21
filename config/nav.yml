@@ -12,6 +12,14 @@ nav:
     icon: file
     path: product
     title: Products
+  -
+    icon: user
+    path: owners
+    title: Owners
+  -
+    icon: globe
+    path: /csw
+    title: CSW
 right:
   -
     icon: github

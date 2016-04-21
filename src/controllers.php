@@ -4,6 +4,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
+$app->get('/owners', function () use ($app) {
+    $owners = [];
+
+    foreach (array_keys($app['config']['white']['entity']) as $key) {
+        $owners[$key] =  (array_column($app['mc.cache.owners']($key), 'owner'));
+    }
+
+    return $app['twig']->render('owners.html.twig', array(
+        'title' => 'Owners List',
+        'active_page' => 'owners',
+        'path' => ['owners' => ['Owners']],
+        'owners' => $owners,
+    ));
+})
+->bind('owners');
+
 $app->mount('/sync', new MetaCat\Controller\SyncController());
 $app->mount('/product', new MetaCat\Controller\ProductController());
 $app->mount('/project', new MetaCat\Controller\ProjectController());
@@ -17,6 +33,7 @@ $app->get('/', function () use ($app) {
     ));
 })
 ->bind('homepage');
+
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

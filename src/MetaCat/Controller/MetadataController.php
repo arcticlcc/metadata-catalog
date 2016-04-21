@@ -12,7 +12,7 @@ class MetadataController implements ControllerProviderInterface {
     public function connect(Application $app) {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{id}/view', function(Application $app, $id) {
+        $controllers->get('/{id}/view', function (Application $app, $id) {
 
             $em = $app['orm.em'];
 
@@ -42,7 +42,7 @@ class MetadataController implements ControllerProviderInterface {
         })
         ->bind('metadatabaseview');
 
-        $controllers->get('/{entity}/{id}.{format}', function(Application $app, $entity, $id, $format) {
+        $controllers->get('/{entity}/{id}.{format}', function (Application $app, $entity, $id, $format) {
 
             $em = $app['orm.em'];
 
@@ -66,20 +66,44 @@ class MetadataController implements ControllerProviderInterface {
         ->bind('metadata')
         ->value('format', 'json');
 
-        $controllers->get('/{id}.{format}', function(Application $app, $id, $format) {
+        $controllers->get('/{id}.{format}', function (Application $app, Request $request, $id, $format) {
 
             $em = $app['orm.em'];
 
-            if(isset($app['config']['white']['entity'][$id])) {
+            if (isset($app['config']['white']['entity'][$id])) {
                 $em = $app['orm.em'];
                 $class = 'MetaCat\Entity\\' . ucfirst($id);
+                //check owner
+                $owners = array_flip(array_column($app['mc.cache.owners']($class), 'owner'));
+                $owner = $request->query->get('owner', '');
+
+                if ($owner && !isset($owners[$owner])) {
+                    throw new HttpException(404, "Owner does not exist: $owner");
+                }
 
                 $sql = "SELECT json_agg(p.json) as out FROM $id p";
+                $where = " WHERE ((SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c WHERE
+                          c->'contactId' = (SELECT value FROM
+                          jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS role
+                          WHERE role@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId') ->>'organizationName') = ? ";
+                          //add filter
+                if ($owner) {
+                    $sql .= $where;
+                }
+
                 $rsm = new ResultSetMappingBuilder($em);
                 $rsm->addRootEntityFromClassMetadata($class, 'p');
                 $rsm->addScalarResult('out', 'out');
                 $query = $em->createNativeQuery($sql, $rsm);
+
+                if ($owner) {
+                    $query->setParameter(1, $owner);
+                }
                 $item = $query->getSingleScalarResult();
+
+                if (!$item) {
+                    throw new HttpException(404, "No $id records found.");
+                }
 
                 return [$item];
             }
@@ -111,7 +135,7 @@ class MetadataController implements ControllerProviderInterface {
             $em = $app['orm.em'];
             $white = $app['config']['white']['entity'];
 
-            if(isset($white[$entity1], $white[$entity2])) {
+            if (isset($white[$entity1], $white[$entity2])) {
                 $em = $app['orm.em'];
                 $class = 'MetaCat\Entity\\' . ucfirst($entity2);
                 $class2 = 'MetaCat\Entity\\' . ucfirst($entity1);
@@ -133,7 +157,7 @@ class MetadataController implements ControllerProviderInterface {
                 $recs = $query->getScalarResult();
                 $out = @$recs[0]['out'];
 
-                if($out) {
+                if ($out) {
                     $request->request->set('format','json');
                     return [$out];
 
@@ -151,4 +175,3 @@ class MetadataController implements ControllerProviderInterface {
         return $controllers;
     }
 }
-?>

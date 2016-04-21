@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav">
                 {% for item in app.config.nav %}
                 <li {% if item.path == active_page %} class="active"{% endif%}>
-                    <a href="{{ item.path starts with 'http' ? item.path : path(item.path) }}">
+                    <a href="{{ item.path starts with 'http' or item.path starts with '/' ? item.path : path(item.path) }}">
                         <span class="fa fa-{{item.icon}}" aria-hidden="true"></span> {{item.title}}
                     </a>
                 </li>
@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 {% endfor %}
-            </ul>            
+            </ul>
         </div>
     </div>
 </nav>
