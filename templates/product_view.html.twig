@@ -97,7 +97,8 @@
                         {% set row_type = 'product' %}
                         {% set row_id = null %}
                         {% for row in data.json.metadata.associatedResource %}
-                        {% if row.associationType == 'projectProduct' and row.initiativeType == 'project' %}
+                        {% if (row.associationType == 'projectProduct' or row.associationType == 'crossReference') 
+                            and row.initiativeType == 'project' %}
                         {% for id in row.resourceCitation.identifier if id.type == 'uuid' and row_id is null %}
                         {% set row_id = id.identifier %}
                         {% endfor %}
