@@ -27,7 +27,7 @@
       <!-- List group -->
       <div class="list-group">
         {% for itm in owner %}
-        <a href="/{{ key }}?owner={{ itm }}" class="list-group-item">{{ itm }}</a>
+        <a href="/{{ key }}?owner={{ itm|url_encode|replace({'%20': '+'}) }}" class="list-group-item">{{ itm }}</a>
         {% endfor %}
       </div>
       {% endif %}
