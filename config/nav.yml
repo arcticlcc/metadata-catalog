@@ -12,6 +12,14 @@ nav:
     icon: file
     path: product
     title: Products
+  -
+    icon: user
+    path: owners
+    title: Owners
+  -
+    icon: globe
+    path: /csw?version=2.0.2&request=GetCapabilities&service=CSW 
+    title: CSW
 right:
   -
     icon: github

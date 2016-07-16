@@ -2,10 +2,10 @@ $(function() {
   if (typeof L === "object" && MetaCat.extents && MetaCat.extents.length > 0) {
     (function() {
       var extents = MetaCat.extents;
-      var mqAttr = '<span>Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></span>';
-      var osmAttr = '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
+      //var mqAttr = '<span>Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></span>';
+      //var osmAttr = '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
 
-      L.TileLayer.OSM = L.TileLayer.extend({
+      /*L.TileLayer.OSM = L.TileLayer.extend({
         initialize: function(options) {
           L.TileLayer.prototype.initialize.call(this, 'http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.png', {
             subdomains: '1234',
@@ -13,7 +13,9 @@ $(function() {
             attribution: 'Map data ' + osmAttr + ', ' + mqAttr
           });
         }
-      });
+      });*/
+
+
 
       var check = function(i, me, lyr) {
         if (i < 3) {
@@ -144,7 +146,11 @@ $(function() {
         var bboxCalc;
         var overlays = {};
 
-        map.addLayer(new L.TileLayer.OSM());
+        //map.addLayer(new L.TileLayer.OSM());
+        var stamen = new L.StamenTileLayer("terrain");
+        map.addLayer(stamen);
+
+
 
         geoArray.forEach(function(json, geoIdx, geoArr) {
           var bbox = json.geometry === null && json.type === "Feature" ? json.bbox : false;

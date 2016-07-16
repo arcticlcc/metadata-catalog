@@ -8,7 +8,7 @@
         {% if index_dev %}
         <div class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-            Warning: For security on production systems, <strong>web/indev_dev.php</strong>
+            Warning: For security on production systems, <strong>web/index_dev.php</strong>
             should not be readable by the web server. Alternatively, simply (re)move from
             the web root.
         </div>
@@ -22,9 +22,14 @@
             catalog utilizes the <a class="external" href="http://www.adiwg.org/projects/#mdjson-schemas">mdJSON</a> format as a datastore. mdJSON records
             are parsed to provide information about projects and products. HTML
             and XML metadata was produced using the
-            <a class="external" class="external"  class="external" class="external"href="http://www.adiwg.org/mdTranslator/about/">ADIwg mdTranslator</a>.
+            <a class="external" href="http://www.adiwg.org/mdTranslator/about/">ADIwg mdTranslator</a>.
             The <a class="external" href="http://mdtools.adiwg.org">mdTools</a> application provides
             an interface for exploring mdJSON and related tools.
+        </p>
+        <h2><abbr title="Catalog Services for the Web">CSW</abbr> support</h2>
+        <p>
+          The Catalog provides support for <a href="/csw">Catalog Services for the Web</a>.
+          Currently, only supported for <i>products</i>.
         </p>
         <h2><abbr title="Application programming interface">API</abbr></h2>
         <p>
@@ -33,9 +38,8 @@
             API is read-only(only GET requests are supported).
         </p>
         <p>
-            Use the interface to explore the API. A json array of all
-            <a href="{{ path('metadatabase', {id: 'product', format: 'json'}) }}">Products</a> or
-            <a href="{{ path('metadatabase', {id: 'project', format: 'json'}) }}">Projects</a> is available.
+            Use the interface to explore the API. A JSON formatted list of all
+            entities is available. See <a href="/owners">the Owners</a> page.
         </p>
         <div class="well" id="api-definitions">
             <h3>GET</h3>
@@ -47,7 +51,7 @@
                     Returns the homepage(HTML-only)
                 </dd>
                 <dt>
-                    .../{entity}[.{format}]
+                    .../{entity}[.{format}][?owner={owner name}]
                 </dt>
                 <dd>
                     Returns an array of entities in the desired format
@@ -57,6 +61,10 @@
                         </li>
                         <li>
                             <i>format</i> = [<strong>json</strong>]
+                        </li>
+                        <li>
+                            <i>owner</i> = string:
+                            Will filter the response by the supplied owner name
                         </li>
                     </ul>
                 </dd>
