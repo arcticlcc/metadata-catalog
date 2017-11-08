@@ -20,7 +20,8 @@ class ProjectController implements ControllerProviderInterface
                 (SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c WHERE
                     c->'contactId' = (SELECT value FROM
                     jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS role
-                    WHERE role@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId') ->>'organizationName' as owner
+                    WHERE role@>'{\"role\":\"administrator\"}' LIMIT 1)
+                      ->'party'->0->'contactId')->>'name' as owner
                 FROM project p) p";
             $class = 'MetaCat\Entity\Project';
             $pagination = $app['mc.paginator']($request, $sql, $class);

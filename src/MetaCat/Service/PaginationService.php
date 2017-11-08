@@ -20,7 +20,8 @@ class PaginationService implements ServiceProviderInterface
               'owner' => $request->query->get('owner', ''),
             ];
             //check owner
-            $owners = array_flip(array_column($app['mc.cache.owners']($class), 'owner'));
+            $col = array_column($app['mc.cache.owners']($class), 'owner');
+            $owners = array_flip(array_filter($col));
             $owner = $params['owner'];
             if ($owner && !isset($owners[$owner])) {
                 $owner = '';

@@ -85,7 +85,8 @@ class MetadataController implements ControllerProviderInterface {
                 $where = " WHERE ((SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c WHERE
                           c->'contactId' = (SELECT value FROM
                           jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS role
-                          WHERE role@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId') ->>'organizationName') = ? ";
+                          WHERE role@>'{\"role\":\"administrator\"}' LIMIT 1)
+                            ->'party'->0->'contactId')->>'name') = ? ";
                           //add filter
                 if ($owner) {
                     $sql .= $where;

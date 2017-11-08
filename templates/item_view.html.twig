@@ -11,7 +11,7 @@
 {% if resource.extent is defined and not resource.extent is empty %}
     {% set geo = [] %}
     {% for item in resource.extent %}
-        {% if item.geographicElement is defined and not item.geographicElement is empty %}
+        {% if item.geographicExtent is defined and not item.geographicExtent is empty %}
             {% set geo = geo|merge({ (loop.index0): item}) %}
         {% endif %}
     {% endfor %}

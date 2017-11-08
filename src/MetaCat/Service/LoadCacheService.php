@@ -14,10 +14,13 @@ class LoadCacheService implements ServiceProviderInterface
             $em = $app['orm.em'];
             $isClass = strrpos($class, '\\');
             $class =strtolower($isClass ? substr($class, $isClass + 1) : $class);
-            $sql = "SELECT (SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c WHERE
+            $sql = "SELECT (SELECT value FROM jsonb_array_elements(json#>'{contact}') AS c
+                WHERE
+                --c->>'contactType' = 'lcc' AND
                 c->'contactId' = (SELECT value FROM
                 jsonb_array_elements(json#>'{metadata,resourceInfo,citation,responsibleParty}') AS rol
-            WHERE rol@>'{\"role\":\"owner\"}' LIMIT 1)->'contactId')->>'organizationName' as \"owner\"
+            WHERE rol@>'{\"role\":\"administrator\"}' LIMIT 1)
+            ->'party'->0->'contactId')->>'name' as \"owner\"
             FROM $class p
             GROUP BY owner";
             $rsm = new ResultSetMappingBuilder($em);

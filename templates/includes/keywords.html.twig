@@ -14,7 +14,7 @@
                             <ul class="list-inline">
                                 {% for k in kw.keyword %}
                                 <li>
-                                    {{ k }}{{ not loop.last ? ', ' }}
+                                    {{ k.keyword }}{{ not loop.last ? ', ' }}
                                 </li>
                                 {% endfor %}
                             </ul>

@@ -37,7 +37,7 @@ $(function() {
         var props = feature.properties;
 
         if (props) {
-          var name = props.featureName;
+          var name = props.name;
           var desc = props.description;
 
           if (name || desc) {
@@ -140,7 +140,7 @@ $(function() {
 
       extents.forEach(function(extent, idx) {
         var map = L.map('geo-' + idx);
-        var geoArray = extent.geographicElement;
+        var geoArray = extent.geographicExtent[0].geographicElement;
         var geojson = [];
         var geoLayer;
         var bboxCalc;
@@ -152,23 +152,29 @@ $(function() {
 
 
 
-        geoArray.forEach(function(json, geoIdx, geoArr) {
-          var bbox = json.geometry === null && json.type === "Feature" ? json.bbox : false;
+        extent.geographicExtent.forEach(function(json, geoIdx, geoArr) {
+          //var bbox = json.geometry === null && json.type === "Feature" ? json.bbox : false;
+          var raw = json.boundingBox;
+          var bbox = [raw.westLongitude, raw.southLatitude, raw.eastLongitude,
+            raw.northLatitude
+          ];
 
           //bbox doesn't cross the dateline
           if (bbox && ((bbox[0] <= 0 && bbox[2] <= 0) || (bbox && bbox[0] > 0 && bbox[2] > 0))) {
-            json.properties.isBox = true;
-            bboxToPoly(json);
+            //json.properties.isBox = true;
+            geojson.push(bboxToPoly(null, bbox));
           }
 
           //add valid object to layer data
-          if (json.geometry || json.features || json.coordinates || json.geometries) {
-            geojson.push(json);
-            return;
-          }
+          json.geographicElement.forEach(function (json) {
+            if(json.geometry || json.features || json.coordinates || json.geometries) {
+              geojson.push(json);
+              return;
+            }
+          });
         });
 
-        //create fature layer
+        //create feature layer
         geoLayer = L.geoJson(geojson, {
           style: function(feature) {
             return feature.properties.style || {};

@@ -4,17 +4,19 @@
         Point of Contact(s)
     </dt>
     <dd>
-    {% for poc in resource.pointOfContact %}
-    {% set contact = attribute(contacts, '_' ~ poc.contactId) %}
+    {% for con in resource.pointOfContact %}
+    {% for poc in con.party %}
+        {% set contact = attribute(contacts, '_' ~ poc.contactId) %}
+        {% set address = contact.address|first %}
         <address>
-          {{ (contact.individualName ? "<strong>#{contact.individualName}</strong><br>")|raw }}
-          {{ (contact.positionName ? "<strong>#{contact.positionName}</strong><br>")|raw }}
-          {{ (contact.organizationName ? "<strong>#{contact.organizationName}</strong><br>")|raw }}
-              {% for dp in contact.address.deliveryPoint %}
+          {{ ("<strong>#{contact.name}</strong><br>")|raw }}
+          {{ (contact.positionName ? "<em>#{contact.positionName}</em><br>")|raw }}
+          {# {{ (contact.organizationName ? "<strong>#{contact.organizationName}</strong><br>")|raw }} #}
+              {% for dp in address.deliveryPoint %}
                 {{ dp }}<br>
               {% endfor %}
-          {{ (contact.address.city and contact.address.administrativeArea) ? "%s, %s %s <br/>"|format(contact.address.city, contact.address.administrativeArea, contact.address.postalCode)|raw }}
-          {% for ph in contact.phoneBook %}
+          {{ (address.city and address.administrativeArea) ? "%s, %s %s <br/>"|format(address.city, address.administrativeArea, address.postalCode)|raw }}
+          {% for ph in contact.phone %}
             {% if ph.service is defined %}
             {% set abbr = null %}
             {% for service in ph.service %}
@@ -25,9 +27,10 @@
             <abbr title="Phone">P:</abbr> ph.phoneNumber
             {% endif %}<br/>
           {% endfor %}
-          {{ (contact.address.electronicMailAddress is not empty ? "<a href=\"mailto:#{contact.address.electronicMailAddress|first}\">#{contact.address.electronicMailAddress|first}</a><br/>")|raw }}
+          {{ (contact.electronicMailAddress is not empty ? "<a href=\"mailto:#{contact.electronicMailAddress|first}\">#{contact.electronicMailAddress|first}</a><br/>")|raw }}
           {{ (contact.onlineResource is not empty ? "<a href=\"#{(contact.onlineResource|first).uri}\">#{(contact.onlineResource|first).uri}</a>")|raw }}
         </address>
+    {% endfor %}
     {% endfor %}
     </dd>
 </dl>
