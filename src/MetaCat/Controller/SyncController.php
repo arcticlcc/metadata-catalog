@@ -15,15 +15,19 @@ use Aws\S3\Exception\S3Exception;
 
 class SyncController implements ControllerProviderInterface
 {
-      private function calculate_etag($filename, $chunksize, $expected = false) {
+    private function calculate_etag($filename, $chunksize, $expected = false)
+    {
         /*
         DESCRIPTION:
         - calculate Amazon AWS ETag used on the S3 service
         INPUT:
         - $filename : path to file to check
         - $chunksize : chunk size in Megabytes
-        - $expected : verify calculated etag against this specified etag and return true or false instead
-            - if you make chunksize negative (eg. -8 instead of 8) the function will guess the chunksize by checking all possible sizes given the number of parts mentioned in $expected
+        - $expected : verify calculated etag against this specified etag and
+          return true or false instead
+            - if you make chunksize negative (eg. -8 instead of 8) the function
+              will guess the chunksize by checking all possible sizes given the
+              number of parts mentioned in $expected
         OUTPUT:
         - ETag (string)
         - or boolean true|false if $expected is set
@@ -167,6 +171,7 @@ class SyncController implements ControllerProviderInterface
                         gzclose($zip);
                         unlink($temp);
 
+                        ini_set('memory_limit', '512M');
                         $app['import.dbal']();
                     } else {
                         throw new Exception("Error retrieving file from S3. $temp
